@@ -79,8 +79,36 @@ app = dash.Dash(
 )
 
 server = app.server
+
+
+def _secret_key() -> str:
+    """
+    Chave que assina o cookie de sessão.
+
+    Em produção, sem `PULSE_SECRET_KEY` configurada, a chave de exemplo daqui
+    é pública (está no código) e permitiria forjar o login de qualquer pessoa.
+    Nesse caso entra uma chave aleatória: os logins valem até o próximo
+    reinício, mas ninguém consegue falsificá-los. O aviso no log diz o que
+    falta. Com `preload_app` do gunicorn, todos os processos herdam a mesma.
+    """
+    configured = os.getenv("PULSE_SECRET_KEY", "").strip()
+    if configured:
+        return configured
+    if DEBUG:
+        return "pulse-local-change-this-secret"
+    import logging
+    import secrets
+
+    logging.getLogger(__name__).warning(
+        "PULSE_SECRET_KEY não configurada: usando uma chave temporária. Os logins "
+        "caem a cada reinício até a variável ser definida no ambiente."
+    )
+    print("[AVISO] PULSE_SECRET_KEY não configurada — defina no ambiente do servidor.", flush=True)
+    return secrets.token_urlsafe(48)
+
+
 server.config.update(
-    SECRET_KEY=__import__("os").getenv("PULSE_SECRET_KEY", "pulse-local-change-this-secret"),
+    SECRET_KEY=_secret_key(),
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
     PERMANENT_SESSION_LIFETIME=__import__("datetime").timedelta(days=30),

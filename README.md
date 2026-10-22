@@ -117,6 +117,25 @@ Antes de expor a porta:
    e `PULSE_COOKIE_SECURE=true`.
 
 Atualizar a versão: copie o código novo e rode `docker compose up -d --build`.
+
+### No Easypanel
+
+O Easypanel constrói pelo `Dockerfile` e **não lê** o `docker-compose.yml` nem o
+`.env` (que fica fora da imagem). As variáveis vão na aba *Environment* do
+serviço — as mesmas do `.env`, mais estas:
+
+```
+PULSE_DEBUG=false
+PULSE_SECRET_KEY=<a do seu .env>
+PULSE_TRUST_PROXY=true
+PULSE_COOKIE_SECURE=true
+```
+
+As duas últimas porque o domínio `*.easypanel.host` é HTTPS com proxy na frente.
+O app ouve na **7000** e também na `PORT` que o Easypanel injeta (80): a porta
+do domínio pode ficar em qualquer uma das duas. Num serviço único, a
+sincronização roda dentro do próprio site (sem o container `sync`).
+
 Regravar o histórico (com o `sync` parado, para não consultarem as APIs em dobro):
 `docker compose stop sync && docker compose run --rm sync python sync_worker.py --rebuild 550 && docker compose start sync`.
 

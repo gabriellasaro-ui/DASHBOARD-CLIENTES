@@ -8,7 +8,12 @@ por alguns segundos), e thread esperando I/O não segura a CPU.
 
 import os
 
-bind = f"0.0.0.0:{os.getenv('PORT', '7000')}"
+# Sempre na 7000 — a porta combinada para o painel. Plataformas como o
+# Easypanel injetam `PORT` (80) e apontam o proxy para ela; ouvindo só na
+# `PORT`, um domínio configurado para a 7000 dava "Service is not reachable"
+# com o app de pé. Ouvindo nas duas, qualquer uma das configurações funciona.
+APP_PORT = os.getenv("APP_PORT", "7000")
+bind = [f"0.0.0.0:{port}" for port in dict.fromkeys([APP_PORT, os.getenv("PORT") or APP_PORT])]
 worker_class = "gthread"
 workers = int(os.getenv("WEB_WORKERS", "2"))
 threads = int(os.getenv("WEB_THREADS", "8"))
