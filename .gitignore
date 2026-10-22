@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.env
+data/*.db
+data/api_cache/
+runtime/*.log
+runtime/*.lock

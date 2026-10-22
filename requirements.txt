@@ -1,0 +1,9 @@
+# Dash fixado: o CSS ajusta classes internas do Dash 4.4.1 (.dash-dropdown,
+# .dash-input-container). Uma versão nova pode renomeá-las sem aviso.
+dash==4.4.1
+dash-daq==0.6.0
+python-dotenv>=1.1,<2.0
+psycopg[binary]==3.2.13
+requests>=2.32,<3.0
+# Servidor de produção (Linux/Docker). Localmente, `python app.py` basta.
+gunicorn==22.0.0

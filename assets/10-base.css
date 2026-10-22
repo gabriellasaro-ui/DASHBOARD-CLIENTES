@@ -1,0 +1,242 @@
+/* ==========================================================================
+   BASE — reset, tipografia e hierarquia
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--plane);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  text-rendering: optimizeLegibility;
+}
+
+#react-entry-point,
+#_dash-app-content {
+  height: 100%;
+}
+
+/* --- Hierarquia tipográfica ----------------------------------------------
+   Quatro degraus e nada além disso. A hierarquia vem de peso e cor,
+   não de multiplicar tamanhos.                                             */
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+/* Títulos usam a fonte de títulos do tema; o resto, a fonte do corpo. */
+h1,
+h2,
+h3,
+.t-page,
+.card__title,
+.kpi__value,
+.auth-card__title {
+  font-family: var(--font-heading);
+}
+
+.t-page {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.t-micro {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+/* Rótulo de seção dentro de um card. Separa blocos de formulário sem
+   precisar de um card novo para cada assunto. */
+.eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Números em coluna alinham; números grandes ficam proporcionais.
+   `tabular-nums` num valor de display deixa o número frouxo, então é
+   restrito a tabelas, eixos e listas.                                      */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* --- Ícone mascarado (Lucide) -------------------------------------------- */
+.icon {
+  display: inline-block;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  vertical-align: middle;
+}
+
+/* --- Foco visível e consistente ------------------------------------------ */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: var(--r-control);
+}
+
+/* --- Scrollbar discreta --------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--r-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-faint);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+::selection {
+  background: var(--brand-ring);
+}
+
+/* --- Animações ------------------------------------------------------------ */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes loading-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes loading-breathe {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.82; }
+  50% { transform: translateY(-3px) scale(1.04); opacity: 1; }
+}
+
+.anim-up { animation: fade-up 320ms var(--ease) both; }
+.anim-up > * { animation: fade-up 380ms var(--ease) both; }
+.anim-up > *:nth-child(2) { animation-delay: 45ms; }
+.anim-up > *:nth-child(3) { animation-delay: 90ms; }
+.anim-up > *:nth-child(4) { animation-delay: 135ms; }
+.anim-up > *:nth-child(5) { animation-delay: 180ms; }
+
+/* A animação acima fica "presa" no quadro final (`both`), e animação de
+   transform/opacity em efeito cria um contexto de empilhamento por bloco.
+   Resultado: o z-index de um popover só valia DENTRO do bloco dele, e o
+   bloco seguinte pintava por cima — o "Personalizar" abria embaixo do card
+   de CPL. O bloco com um popover aberto sobe acima dos vizinhos. */
+.anim-up > *:has(.pop:not(.hide)) {
+  position: relative;
+  z-index: 50;
+}
+.kpi-grid .kpi { animation: pop-in 360ms var(--ease) both; }
+.kpi-grid .kpi:nth-child(2n) { animation-delay: 35ms; }
+.kpi-grid .kpi:nth-child(3n) { animation-delay: 70ms; }
+
+/* Respeita quem pediu menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Utilitários mínimos --------------------------------------------------
+   Um punhado de helpers, não um framework. Layout específico vive no CSS
+   do próprio componente.                                                   */
+.row { display: flex; align-items: center; }
+.row-between { display: flex; align-items: center; justify-content: space-between; }
+.col { display: flex; flex-direction: column; }
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.grow { flex: 1 1 auto; min-width: 0; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hide { display: none !important; }

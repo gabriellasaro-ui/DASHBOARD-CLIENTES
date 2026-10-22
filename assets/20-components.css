@@ -1,0 +1,838 @@
+/* ==========================================================================
+   COMPONENTES — o vocabulário visual inteiro do produto
+   Cada peça aparece uma vez aqui e é reusada em todas as telas, então nada
+   diverge entre Dashboard, Meta e Google.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CARD — superfície base. Toda caixa da interface é um card.
+   -------------------------------------------------------------------------- */
+.card {
+  min-width: 0;               /* impede que um filho largo estoure a grade */
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--t) var(--ease),
+    box-shadow var(--t) var(--ease),
+    transform var(--t) var(--ease);
+}
+
+.card--interactive:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px 14px;
+}
+
+.card__title-wrap { min-width: 0; }
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.card__title .icon { color: var(--ink-muted); }
+
+.card__subtitle {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.card__body { padding: 0 20px 20px; }
+.card__body--flush { padding: 0; }
+
+/* --------------------------------------------------------------------------
+   BADGE — a cor nunca carrega o significado sozinha: sempre há rótulo.
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+.badge--positive { color: var(--positive); background: var(--positive-tint); }
+.badge--negative { color: var(--negative); background: var(--negative-tint); }
+.badge--warning  { color: var(--warning);  background: var(--warning-tint); }
+.badge--info     { color: var(--info);     background: var(--info-tint); }
+.badge--brand    { color: var(--brand);    background: var(--brand-tint); }
+.badge--neutral  { color: var(--ink-secondary); background: var(--wash-2); }
+
+/* --------------------------------------------------------------------------
+   BOTÃO
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--r-control);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background-color var(--t) var(--ease),
+    border-color var(--t) var(--ease),
+    color var(--t) var(--ease),
+    opacity var(--t) var(--ease);
+}
+
+.btn:disabled { pointer-events: none; opacity: 0.45; }
+
+.btn--primary {
+  background: var(--brand);
+  color: var(--brand-contrast, #fff);
+}
+.btn--primary:hover { background: var(--brand-hover); }
+.btn--primary:active { background: var(--brand-active); }
+
+.btn--secondary {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.btn--secondary:hover { background: var(--wash-1); border-color: var(--line-strong); }
+
+.btn--outline {
+  border: 1px solid var(--line);
+  color: var(--ink-secondary);
+  background: var(--surface);
+}
+.btn--outline:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: var(--wash-1);
+}
+
+.btn--ghost { color: var(--ink-secondary); }
+.btn--ghost:hover { color: var(--ink); background: var(--wash-2); }
+
+/* Ação destrutiva: legível como perigo sem gritar mais que a ação primária */
+.btn--danger {
+  background: var(--negative-tint);
+  border: 1px solid rgba(229, 0, 26, 0.22);
+  color: var(--negative);
+}
+.btn--danger:hover { background: rgba(229, 0, 26, 0.14); border-color: var(--negative); }
+
+.btn--sm { height: 30px; padding: 0 10px; font-size: 11px; gap: 6px; }
+.btn--lg { height: 44px; padding: 0 20px; font-size: 14px; }
+.btn--icon { width: 36px; height: 36px; padding: 0; }
+.btn--block { width: 100%; }
+
+/* --------------------------------------------------------------------------
+   CAMPOS
+   -------------------------------------------------------------------------- */
+.field { width: 100%; }
+
+.field__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+}
+
+.field__wrap { position: relative; display: flex; align-items: center; }
+
+.field__icon {
+  position: absolute;
+  left: 12px;
+  color: var(--ink-muted);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  color: var(--ink);
+  font-size: 13px;
+  transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+
+.input::placeholder { color: var(--ink-faint); }
+.input:hover { border-color: var(--line-strong); }
+.input:focus {
+  border-color: var(--ink);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+/* O preenchimento automático do Chrome pinta o campo de lilás e sobrescreve
+   fundo e cor do texto. Devolve a superfície e a tinta do design system. */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 40px var(--surface) inset;
+  box-shadow: 0 0 0 40px var(--surface) inset;
+  caret-color: var(--ink);
+}
+
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 40px var(--surface) inset, 0 0 0 3px rgba(11, 11, 13, 0.10);
+  box-shadow: 0 0 0 40px var(--surface) inset, 0 0 0 3px rgba(11, 11, 13, 0.10);
+}
+
+/* Dash 4: o `dcc.Input` virou um CONTAINER (`.dash-input-container`) com o
+   <input> real dentro (`.dash-input-element`), e a classe "input" cai no
+   container. Sem as regras abaixo, o foco pintava dois anéis: o roxo padrão
+   do Dash no container e o anel global de :focus-visible (cor da marca) no
+   <input> de dentro — era o "sombreado roxo com vermelho dentro". Fica um
+   anel só, neutro, no container. A validação nativa também sai: o Dash pinta
+   o texto de vermelho em `:invalid`, e uma senha ainda curta parecia erro
+   enquanto a pessoa digitava. O formulário valida ao enviar. */
+.dash-input-container.input {
+  padding: 0;
+  outline: none;
+  overflow: hidden;
+}
+
+.dash-input-container.input:focus-within {
+  border-color: var(--ink);
+  box-shadow: var(--focus-ring);
+}
+
+.dash-input-container.input:has(:focus-visible) { outline: none; }
+
+.dash-input-container.input .dash-input-element {
+  height: 100%;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: inherit;
+  box-shadow: none;
+  outline: none;
+}
+
+.dash-input-container.input--with-icon .dash-input-element { padding-left: 36px; }
+
+.dash-input-element:focus,
+.dash-input-element:focus-visible,
+.dash-input-element:invalid,
+.dash-input-element:user-invalid {
+  color: var(--ink);
+  box-shadow: none;
+  outline: none;
+}
+
+.dash-input-container.input .dash-input-element:-webkit-autofill,
+.dash-input-container.input .dash-input-element:-webkit-autofill:hover,
+.dash-input-container.input .dash-input-element:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 40px var(--surface) inset;
+  box-shadow: 0 0 0 40px var(--surface) inset;
+  caret-color: var(--ink);
+}
+
+/* O container do Dash é posicionado e vem depois do ícone no DOM: sem
+   z-index ele pintava por cima, e o cadeado/usuário sumia do campo. */
+.field__icon { z-index: 2; }
+
+.input--with-icon { padding-left: 34px; }
+.input--sm { height: 32px; font-size: 12px; }
+
+/* Seletor de cor: amostra grande + hexadecimal + paleta.
+   Compacto de propósito — um retângulo de cor com a largura do formulário
+   vira o elemento mais pesado da tela e rouba atenção do resto. */
+.color-field { display: flex; flex-direction: column; gap: 8px; }
+.color-field__head { display: flex; align-items: center; gap: 8px; }
+
+.color-field__swatch {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+}
+
+.color-field__hex {
+  width: 104px;
+  flex: none;
+  text-transform: uppercase;
+}
+
+.color-field { position: relative; }
+.color-field__swatch { cursor: pointer; transition: box-shadow var(--t) var(--ease); }
+.color-field__swatch:hover { box-shadow: 0 0 0 3px var(--brand-ring); }
+
+/* O picker abre ancorado no campo, acima do conteúdo seguinte */
+.color-field__pop { top: 100%; left: 0; padding: 10px; }
+
+/* O daq traz o próprio visual; aqui só se encaixa a caixa dele no card */
+.color-field__pop .dash-color-picker { box-shadow: none !important; }
+
+.color-picker {
+  width: 64px;
+  height: 38px;
+  flex: none;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+
+.color-picker:hover { border-color: var(--line-strong); }
+.color-picker:focus {
+  border-color: var(--ink);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+.color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+.color-picker::-webkit-color-swatch,
+.color-picker::-moz-color-swatch { border: 0; border-radius: 7px; }
+
+.field__hint { margin-top: 6px; font-size: 11px; color: var(--ink-muted); }
+
+/* Checkbox ---------------------------------------------------------------
+   Substitui o visual nativo do dcc.Checklist por inteiro: caixa de 15px,
+   marca desenhada em SVG, transição de 250ms como o resto do sistema.     */
+.checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: color var(--t) var(--ease);
+}
+.checkbox:hover { color: var(--ink); }
+
+.checkbox__box {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  flex: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background-color: var(--surface);
+  cursor: pointer;
+  transition: background-color var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+
+.checkbox__box:checked {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M6.2 11.1 3.5 8.4l1-1 1.7 1.7 4.3-4.3 1 1z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* --------------------------------------------------------------------------
+   DROPDOWN / POPOVER
+   -------------------------------------------------------------------------- */
+.pop-anchor { position: relative; }
+
+.pop {
+  position: absolute;
+  z-index: 60;
+  margin-top: 8px;
+  min-width: 200px;
+  padding: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-pop);
+  animation: pop-in 160ms var(--ease) both;
+}
+
+.pop--right { right: 0; }
+.pop--left { left: 0; }
+
+.pop__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  text-align: left;
+  color: var(--ink-secondary);
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+.pop__item:hover { background: var(--wash-2); color: var(--ink); }
+.pop__item--selected { color: var(--ink); }
+.pop__item--danger { color: var(--negative); }
+.pop__item--danger:hover { background: var(--negative-tint); color: var(--negative); }
+
+.pop__item-text { flex: 1; min-width: 0; }
+.pop__item-desc { display: block; margin-top: 2px; font-size: 11px; color: var(--ink-muted); }
+.pop__check { color: var(--brand); }
+
+.pop__label {
+  padding: 8px 10px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.pop__sep { height: 1px; margin: 6px 0; background: var(--line-soft); }
+
+.pop__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 8px 4px 2px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* Gatilho padrão de dropdown --------------------------------------------- */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  transition: background-color var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+
+.trigger:hover { background: var(--wash-1); border-color: var(--line-strong); }
+.trigger__chevron { color: var(--ink-muted); transition: transform var(--t) var(--ease); }
+
+/* --------------------------------------------------------------------------
+   TOOLTIP — só CSS, aparece no hover e no foco por teclado
+   -------------------------------------------------------------------------- */
+.tt { position: relative; display: inline-flex; }
+
+.tt__bubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 2px);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  background: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  /* Balão invertido: a tinta do tema vira o fundo e o card vira o texto. */
+  color: var(--surface);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 70;
+  transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
+}
+
+.tt:hover .tt__bubble,
+.tt:focus-within .tt__bubble {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.tt--right .tt__bubble { bottom: auto; left: auto; right: 0; transform: translate(0, 2px); }
+.tt--right:hover .tt__bubble { transform: translate(0, 0); }
+
+.hint-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  transition: color var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+.hint-dot:hover { color: var(--ink-secondary); border-color: var(--line-strong); }
+
+/* --------------------------------------------------------------------------
+   SIMULAÇÃO DE ACESSO
+   Faixa fixa no topo enquanto o administrador vê o painel como um cliente.
+   Usa a tinta principal (e não a cor da marca): é um aviso do sistema, não
+   um elemento do cliente que está sendo simulado.
+   -------------------------------------------------------------------------- */
+.impersonation {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+}
+
+.impersonation .icon { color: #fff; opacity: 0.75; }
+.impersonation__text { color: rgba(255, 255, 255, 0.85); }
+.impersonation__text strong { color: #fff; font-weight: 600; }
+.impersonation__email { color: rgba(255, 255, 255, 0.55); }
+
+.impersonation__exit {
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-weight: 500;
+  transition: background-color var(--t) var(--ease);
+}
+
+.impersonation__exit:hover { background: rgba(255, 255, 255, 0.26); }
+
+/* --------------------------------------------------------------------------
+   ESTADO VAZIO
+   -------------------------------------------------------------------------- */
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.state__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+}
+
+.state__title { font-size: 13px; font-weight: 500; color: var(--ink); }
+.state__desc { max-width: 300px; margin-top: 6px; font-size: 11px; line-height: 1.6; color: var(--ink-muted); }
+.state__action { margin-top: 18px; }
+
+/* --------------------------------------------------------------------------
+   SEGMENTED CONTROL
+   -------------------------------------------------------------------------- */
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+}
+
+.segmented__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ink-muted);
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+.segmented__item:hover { color: var(--ink-secondary); }
+
+.segmented__item--active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+}
+
+.segmented__count { font-size: 10px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.segmented__item--active .segmented__count { color: var(--ink-muted); }
+
+/* --------------------------------------------------------------------------
+   BREADCRUMB
+   -------------------------------------------------------------------------- */
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 11px; }
+.crumbs__link { color: var(--ink-muted); transition: color var(--t) var(--ease); }
+.crumbs__link:hover { color: var(--ink-secondary); }
+.crumbs__current { color: var(--ink-secondary); font-weight: 500; }
+.crumbs__sep { color: var(--ink-faint); }
+
+/* --------------------------------------------------------------------------
+   AVATAR + LOGO
+   -------------------------------------------------------------------------- */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  /* Segue a cor do cliente. Fixar o vermelho aqui fazia o avatar destoar de
+     todo o resto do painel quando a marca era de outra cor. */
+  color: var(--brand-contrast);
+  background: linear-gradient(135deg, var(--brand), var(--brand-active));
+  flex: none;
+}
+
+.avatar--sm { width: 26px; height: 26px; font-size: 10px; }
+.avatar--md { width: 32px; height: 32px; font-size: 11px; }
+.avatar--lg { width: 44px; height: 44px; font-size: 14px; }
+
+.logo { display: inline-flex; align-items: center; gap: 10px; }
+
+.logo__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--brand);
+  color: var(--brand-contrast, #fff);
+}
+
+.logo__image {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex: none;
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.logo__name {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.logo__sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+}
+
+/* Feedback de formulários — além da cor, o texto sempre explica o estado. */
+.form-feedback {
+  display: none;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--r-control);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.form-feedback--error {
+  display: block;
+  color: var(--negative);
+  background: var(--negative-tint);
+  border-color: var(--negative);
+}
+
+.form-feedback--success {
+  display: block;
+  color: var(--positive);
+  background: var(--positive-tint);
+  border-color: var(--positive);
+}
+
+.upload-zone {
+  display: block;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-control);
+  background: var(--surface-sunken);
+  transition: border-color var(--t) var(--ease), background-color var(--t) var(--ease);
+  cursor: pointer;
+}
+
+.upload-zone:hover { border-color: var(--brand); background: var(--brand-tint); }
+
+.upload-zone__content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 68px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+.upload-zone__content strong { display: block; color: var(--ink); font-weight: 600; }
+.upload-zone__content span:last-child { display: block; margin-top: 2px; font-size: 10px; color: var(--ink-muted); }
+.upload-zone__icon { color: var(--brand); }
+
+.logo-upload { display: flex; flex-direction: column; gap: 10px; }
+
+.logo-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--surface);
+  animation: fade-in 180ms ease both;
+}
+
+.logo-preview__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 112px;
+  height: 52px;
+  padding: 6px;
+  border-radius: var(--r-sm);
+  /* Xadrez claro: logo com fundo transparente continua legível. */
+  background-color: var(--surface-sunken);
+  background-image:
+    linear-gradient(45deg, var(--line-soft) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--line-soft) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--line-soft) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--line-soft) 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+}
+
+.logo-preview__frame img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+
+.logo-preview__text { min-width: 0; font-size: 12px; color: var(--ink-secondary); }
+.logo-preview__text strong { display: block; color: var(--ink); font-weight: 600; }
+.logo-preview__text span {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--ink-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logo-preview--error {
+  color: var(--negative);
+  border-color: var(--negative);
+  background: var(--negative-tint);
+  font-size: 12px;
+}
+
+.radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.radio-option {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  font-size: 12px;
+  color: var(--ink-secondary);
+  cursor: pointer;
+}
+
+.radio-option__input { accent-color: var(--brand); }
+
+/* --------------------------------------------------------------------------
+   PAGINAÇÃO
+   -------------------------------------------------------------------------- */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.pager__info { font-size: 11px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.pager__nav { display: flex; align-items: center; gap: 3px; }
+
+.pager__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: var(--r-sm);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+
+.pager__btn:hover { background: var(--wash-2); color: var(--ink-secondary); }
+
+.pager__btn--arrow { border: 1px solid var(--line); color: var(--ink-secondary); }
+.pager__btn--arrow:hover { border-color: var(--line-strong); color: var(--ink); }
+
+.pager__btn--active {
+  background: var(--brand);
+  color: var(--brand-contrast);
+}
+.pager__btn--active:hover { background: var(--brand-hover); color: var(--brand-contrast); }
+
+.pager__btn--disabled { opacity: 0.35; pointer-events: none; }
+.pager__gap { padding: 0 2px; font-size: 11px; color: var(--ink-faint); }

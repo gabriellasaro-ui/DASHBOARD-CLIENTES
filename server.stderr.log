@@ -1,0 +1,562 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:8050
+Press CTRL+C to quit
+127.0.0.1 - - [11/Aug/2026 16:07:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:08:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:09:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:10:33] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:11:13] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:11:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:12:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:13:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:14:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:15:05] "POST /_dash-update-component?endId=6OKySutF5Pz4XdRRIPVG19Va~e013c3693c52532a02dc38248415c44478d1509457e4f09e4e0d3e9726c8d731 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:15:07] "POST /_dash-update-component?endId=6OKySutF5Pz4XdRRIPVG19Va~e013c3693c52532a02dc38248415c44478d1509457e4f09e4e0d3e9726c8d731 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:15:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:16:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:17:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:18:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:19:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:20:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:21:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:22:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /meta-ads HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:33] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:34] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:34] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 16:23:34] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:34] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:35] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:36] "GET /_dash-component-suites/dash/dcc/async-graph.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 16:23:37] "GET /_dash-component-suites/plotly/package_data/plotly.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 16:23:43] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:44] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:46] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:48] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:51] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:53] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:57] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:59] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:23:59] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:00] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:00] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:16] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:16] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:16] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:16] "GET /_dash-component-suites/dash/dcc/async-upload.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 16:24:20] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:21] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:24:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:25:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:26:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:27:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:28:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:29:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:30:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:31:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:32:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:33:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:33:34] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:34:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:35:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:36:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:37:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:38:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:39:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:40:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:41:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:42:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:43:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:43:35] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:44:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:45:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:46:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:47:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:48:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:49:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:50:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:51:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:52:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:53:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:53:35] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:54:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:55:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:56:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:57:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:58:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 16:59:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:00:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:01:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:02:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:03:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:03:35] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:04:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:05:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:06:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:07:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:08:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:09:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:10:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:11:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:12:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:13:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:13:35] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:14:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:15:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:16:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:17:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:18:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:19:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:20:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:21:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:22:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:23:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:23:36] "POST /_dash-update-component?endId=EfmmX3jAqOewlc0aMhkzKOKq~f2e0d96dac56fcf273a0a51705d72854b162b5f5e2f188a4c4cd6faa679f7dae HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:24:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:25:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /somaxi HTTP/1.1" 302 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /_dash-component-suites/dash/deps/react@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /_dash-component-suites/dash/deps/prop-types@15.v4_4_1m1786038868.8.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:47] "GET /_dash-component-suites/dash/deps/react-dom@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:48] "GET /_dash-component-suites/dash/dash-renderer/build/dash_renderer.v4_4_1m1786038868.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:48] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:49] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:49] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:26:49] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:49] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:52] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:26:54] "GET /_dash-component-suites/dash/dcc/async-graph.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:26:54] "GET /_dash-component-suites/plotly/package_data/plotly.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:27:00] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:00] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:01] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:06] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:07] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:10] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:14] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:16] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:16] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:18] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:19] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:20] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:24] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:24] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:26] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:27] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:31] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:32] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:27:59] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:01] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:13] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:13] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:13] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:14] "GET /_dash-component-suites/dash/dcc/async-upload.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:20] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:21] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:23] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:23] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:27] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:30] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:33] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:36] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:39] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:42] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:45] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:48] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:51] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:54] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:28:57] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:00] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:03] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:06] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:09] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:12] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:15] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:18] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:21] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:24] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:45] "GET /somaxi HTTP/1.1" 302 -
+127.0.0.1 - - [11/Aug/2026 17:29:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-component-suites/dash/deps/react@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-component-suites/dash/deps/react-dom@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-component-suites/dash/deps/prop-types@15.v4_4_1m1786038868.8.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-component-suites/dash/dash-renderer/build/dash_renderer.v4_4_1m1786038868.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:46] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:47] "POST /_dash-update-component?endId=Wbjms89EkDlLpPiuioTuDVHp~4e7e1b2581d2ff90d3fe44a4f4755b459d9308594466ecf6f247b6fe7d3cff4a HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:47] "POST /_dash-update-component?endId=Wbjms89EkDlLpPiuioTuDVHp~4e7e1b2581d2ff90d3fe44a4f4755b459d9308594466ecf6f247b6fe7d3cff4a HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:48] "POST /_dash-update-component?endId=Wbjms89EkDlLpPiuioTuDVHp~4e7e1b2581d2ff90d3fe44a4f4755b459d9308594466ecf6f247b6fe7d3cff4a HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:29:48] "GET /_dash-component-suites/plotly/package_data/plotly.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:29:49] "GET /_dash-component-suites/dash/dcc/async-graph.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:30:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:31:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:32:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:33:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:34:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:35:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:36:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:36:49] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:37:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:38:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:39:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:40:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:41:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:42:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:43:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:44:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:45:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:46:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:46:49] "POST /_dash-update-component?endId=HbAhtc1ZT3qfroR9mCwxVCqi~711d42fc5c19ba799389e10a0229fe03d7f4bfbfeb467ee3b65433dcda3c2460 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:47:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:48:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:49:32] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:40] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/deps/react@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/deps/react-dom@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/deps/prop-types@15.v4_4_1m1786038868.8.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/dash-renderer/build/dash_renderer.v4_4_1m1786038868.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/deps/polyfill@7.v4_4_1m1786038868.12.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/html/dash_html_components.v4_4_1m1786038869.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/dash_table/bundle.v7_4_1m1786038868.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/dcc/dash_core_components-shared.v4_4_1m1786038868.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-component-suites/dash/dcc/dash_core_components.v4_4_1m1786038868.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:41] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:42] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:42] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:42] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:42] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:42] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:43] "GET /_dash-component-suites/dash/dcc/async-upload.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:47] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:50:48] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:51:00] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:51:02] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:51:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:51:52] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:51:56] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:51:56] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:19] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:24] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:25] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:31] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:32] "POST /_dash-update-component?endId=QOnw0e9wGox4EbleBMBhkSNl~c31321b202723414c3233b12f804ddd8c48a435d3a1161885e82c3d44bcbc6f6 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:32] "GET /admin HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:33] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:34] "GET /_dash-component-suites/dash/dcc/async-upload.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:52:39] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:40] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:42] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:42] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:45] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:45] "GET /_dash-component-suites/dash/dcc/async-graph.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:45] "GET /_dash-component-suites/plotly/package_data/plotly.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:52] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:54] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:55] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:55] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:52:56] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:01] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "POST /_dash-update-component?endId=ioxt9Q1CQ0YEfkukgoYcEuyf~dc4af3b82010b52db811f37b03ba9ef5b4abfea2a191a99a1a6c6987cec849ef HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /meta-ads HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:08] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:09] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:09] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:09] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:09] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:11] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:11] "GET /_dash-component-suites/dash/dcc/async-graph.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:11] "GET /_dash-component-suites/plotly/package_data/plotly.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:53:16] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:17] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:19] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:20] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:32] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:33] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:36] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:43] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:44] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:47] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:47] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:48] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:49] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:53:56] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:08] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:11] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:11] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:13] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:16] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:17] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:19] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:20] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:23] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:24] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:27] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:27] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:28] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:32] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:39] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:56] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:56] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:56] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:54:56] "GET /_dash-component-suites/dash/dcc/async-upload.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:01] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:02] "POST /_dash-update-component?endId=8ddGiTUmVUidL36zlGe9J0RV~d951b880fcc305eaed9078f780986914262efbf3d2325564fa89bb8437381566 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /burning HTTP/1.1" 302 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /assets/10-base.css?m=1786473788.3741891 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /assets/00-tokens.css?m=1786467589.652454 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /assets/40-responsive.css?m=1786474135.8489907 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /assets/30-layout.css?m=1786473788.375716 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /assets/20-components.css?m=1786469225.4333098 HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/deps/polyfill@7.v4_4_1m1786038868.12.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/deps/react-dom@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/deps/react@18.v4_4_1m1786038868.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/deps/prop-types@15.v4_4_1m1786038868.8.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/dash-renderer/build/dash_renderer.v4_4_1m1786038868.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/dcc/dash_core_components.v4_4_1m1786038868.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/html/dash_html_components.v4_4_1m1786038869.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/dcc/dash_core_components-shared.v4_4_1m1786038868.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/dash_table/bundle.v7_4_1m1786038868.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-dependencies HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-layout HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "GET /_dash-component-suites/dash/dcc/async-dropdown.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:08] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:10] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:55:10] "GET /_dash-component-suites/dash/dcc/async-graph.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:10] "GET /_dash-component-suites/plotly/package_data/plotly.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [11/Aug/2026 17:55:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:56:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:57:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:58:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 17:59:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:00:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:01:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:02:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:03:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:04:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:05:09] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:05:13] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:05:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:06:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:07:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:08:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:09:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:10:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:11:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:12:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:23:28] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 18:23:28] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+[2026-08-11 18:23:28,325] ERROR in app: Exception on /_dash-update-component [POST]
+Traceback (most recent call last):
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\asgiref\sync.py", line 325, in __call__
+    return call_result.result()
+           ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\_base.py", line 443, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\concurrent\futures\_base.py", line 395, in __get_result
+    raise self._exception
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\asgiref\sync.py", line 365, in main_wrap
+    result = await awaitable
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\dash\backends\_flask.py", line 283, in _dispatch_async
+    response_data = ctx.run(partial_func)
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\dash\_callback.py", line 841, in add_context
+    raise err
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\dash\_callback.py", line 832, in add_context
+    output_value = _invoke_callback(func, *func_args, **func_kwargs)  # type: ignore[reportArgumentType]
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\dash\_callback.py", line 60, in _invoke_callback
+    return func(*args, **kwargs)  # %% callback invoked %%
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\pages\dashboard.py", line 200, in _reload
+    return _body(period_id or DEFAULT_PERIOD, _sanitize(selected))
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\pages\dashboard.py", line 69, in _body
+    data = get_dataset(period_id)
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\core\data.py", line 682, in get_dataset
+    tenant = get_tenant(tenant_id) if tenant_id else active_tenant()
+                                                     ~~~~~~~~~~~~~^^
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\core\auth.py", line 40, in active_tenant
+    user = user or current_user()
+                   ~~~~~~~~~~~~^^
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\core\auth.py", line 13, in current_user
+    user = get_user(session.get("user_id"))
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\core\storage.py", line 376, in get_user
+    with connection() as db:
+         ~~~~~~~~~~^^
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Users\Gabriel\Documents\Projetos\DASHBOARD CLIENTES\core\storage.py", line 84, in connection
+    raw = psycopg.connect(DATABASE_URL, row_factory=dict_row, connect_timeout=15)
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\psycopg\connection.py", line 98, in connect
+    attempts = conninfo_attempts(params)
+  File "C:\Users\Gabriel\AppData\Local\Programs\Python\Python314\Lib\site-packages\psycopg\_conninfo_attempts.py", line 55, in conninfo_attempts
+    raise last_exc
+psycopg.OperationalError: failed to resolve host 'easypanel.v4lisboatech.com.br': [Errno 11001] getaddrinfo failed
+127.0.0.1 - - [11/Aug/2026 18:23:28] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 500 -
+127.0.0.1 - - [11/Aug/2026 19:09:37] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:09:37] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:09:42] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:10:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:11:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:12:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:13:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:14:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:15:09] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:15:11] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:15:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:16:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:17:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:18:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:19:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:20:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:21:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:22:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:23:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:24:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:25:09] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:25:11] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:25:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:26:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:27:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:28:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:29:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:30:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:31:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:32:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:33:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:34:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:35:10] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:35:12] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:35:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:36:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:37:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:38:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:39:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:40:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:41:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:42:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:43:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:44:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:45:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:45:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:45:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:46:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:47:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:48:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:49:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:50:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:58:13] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:58:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:58:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:58:35] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 19:59:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:00:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:01:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:02:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:03:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:04:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:05:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:05:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:05:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:06:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:07:31] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:08:06] "GET /_reload-hash HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:15:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:15:34] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:25:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:25:34] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:35:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:35:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:45:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:45:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:55:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 20:55:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:05:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:05:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:15:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:15:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:25:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:25:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:35:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:35:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:45:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:45:32] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:55:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 21:55:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:05:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:05:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:15:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:15:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:25:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:25:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:35:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:35:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:45:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:45:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:55:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 22:55:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:05:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:05:32] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:15:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:15:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:31:14] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:31:16] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:35:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:35:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:45:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:45:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:55:31] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -
+127.0.0.1 - - [11/Aug/2026 23:55:33] "POST /_dash-update-component?endId=o7u3PAIcqbhWV5JBgNtbA8Kh~bc00a6aa1be8f4cc2fec52eb9343a76c1851cca23dd38371f20c56794834553e HTTP/1.1" 200 -

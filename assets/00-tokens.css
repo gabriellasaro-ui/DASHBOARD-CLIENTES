@@ -1,0 +1,128 @@
+/* ==========================================================================
+   DESIGN TOKENS — fonte única de verdade
+   Tema claro V4: fundo branco, vermelho V4 como cor de ação.
+   Nenhum valor de cor, raio, sombra ou duração aparece solto no resto do CSS.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Superfícies -------------------------------------------------- */
+  --plane: #ffffff;          /* fundo da aplicação */
+  --surface: #ffffff;        /* card */
+  --surface-raised: #ffffff; /* dropdown, modal, tooltip */
+  --surface-sunken: #f7f8f9; /* header de tabela, input, trilho */
+  --surface-hover: #f7f8f9;  /* linha de tabela / item em hover */
+  --surface-tint: #fafafb;   /* sidebar — separa do conteúdo sem virar cinza */
+
+  /* ---- Linhas -------------------------------------------------------- */
+  --line: #e6e7ea;
+  --line-soft: #eff0f2;
+  --line-strong: #d3d6dc;
+
+  /* ---- Tinta --------------------------------------------------------- */
+  --ink: #0b0b0d;
+  --ink-secondary: #52565e;
+  --ink-muted: #767b84;
+  --ink-faint: #9aa0a9;
+
+  /* ---- Washes -------------------------------------------------------
+     Sobreposições de hover/ativo. Ficam em token porque são exatamente o
+     que inverte entre tema claro e escuro — no escuro seriam brancas.   */
+  --wash-1: rgba(11, 11, 13, 0.03);
+  --wash-2: rgba(11, 11, 13, 0.055);
+  --wash-3: rgba(11, 11, 13, 0.08);
+
+  /* ---- Marca V4 ------------------------------------------------------
+     O mesmo vermelho serve para ação e para variação negativa.
+     Dois vermelhos quase iguais confundiriam mais do que ajudam, e a
+     direção nunca depende da cor: vem sempre com seta e sinal.          */
+  --brand: #e5001a;          /* 4,83:1 no branco */
+  --brand-hover: #c40017;
+  --brand-active: #a30014;
+  --brand-tint: rgba(229, 0, 26, 0.08);
+  --brand-ring: rgba(229, 0, 26, 0.16);
+
+  /* ---- Status — reservado, sempre com ícone/rótulo junto ------------- */
+  --positive: #16a34a;       /* 3,30:1 */
+  --negative: #e5001a;       /* mesmo vermelho da marca */
+  --warning: #b45309;        /* âmbar escuro: amarelo puro é ilegível no branco */
+  --info: #1d6fd0;
+
+  --positive-tint: rgba(22, 163, 74, 0.09);
+  --negative-tint: rgba(229, 0, 26, 0.08);
+  --warning-tint: rgba(180, 83, 9, 0.09);
+  --info-tint: rgba(29, 111, 208, 0.09);
+
+  /* ---- Séries de gráfico ---------------------------------------------
+     Paleta validada contra a superfície branca do card:
+     separação CVD ΔE ≥ 9,2 em todos os pares e contraste ≥ 3:1.
+     O quarto slot é cinza de propósito — é a fatia "Outros", não uma
+     identidade disputando atenção com as três primeiras.
+     Nenhuma série é vermelha: o vermelho é da marca e de "caiu", e uma
+     linha vermelha num gráfico seria lida como problema.                */
+  --series-1: #2a78d6;  /* azul    — investimento, Meta   */
+  --series-2: #eb6834;  /* laranja — Google               */
+  --series-3: #1baf7a;  /* verde-azulado — receita, leads */
+  --series-4: #4b5563;  /* neutro  — Outros               */
+
+  /* Rampa ordinal de hue única (funil) — ΔL ≥ 0,06 entre degraus */
+  --ordinal-1: #1c5cab;
+  --ordinal-2: #3987e5;
+  --ordinal-3: #86b6ef;
+
+  /* ---- Chrome de gráfico --------------------------------------------- */
+  --grid: #eef0f2;
+  --axis: #e6e7ea;
+
+  /* ---- Raio ---------------------------------------------------------- */
+  --r-card: 18px;
+  --r-control: 10px;
+  --r-sm: 8px;
+  --r-pill: 999px;
+
+  /* ---- Sombra — extremamente suave ------------------------------------
+     No tema claro a sombra faz mais trabalho do que no escuro: o card é
+     branco sobre branco, então é ela + a borda que criam a separação.   */
+  --shadow-card: 0 1px 2px rgba(11, 11, 13, 0.04), 0 1px 3px rgba(11, 11, 13, 0.03);
+  --shadow-card-hover: 0 4px 16px -6px rgba(11, 11, 13, 0.12), 0 2px 4px rgba(11, 11, 13, 0.04);
+  --shadow-pop: 0 16px 40px -12px rgba(11, 11, 13, 0.18), 0 0 0 1px rgba(11, 11, 13, 0.05);
+  --ring: 0 0 0 3px var(--brand-ring);
+
+  /* ---- Movimento ------------------------------------------------------ */
+  --t: 250ms;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* ---- Tipografia ----------------------------------------------------- */
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: var(--font);
+
+  /* ---- Derivados do tema ----------------------------------------------
+     Valores do tema claro padrão. Com tema de cliente, TODOS vêm calculados
+     de `core/tenant_theme.py` no elemento raiz — fundo grafite não deixa
+     nenhuma barra branca nem anel preto para trás.                       */
+  --focus-ring: 0 0 0 3px rgba(11, 11, 13, 0.10);
+  --topbar-bg: rgba(255, 255, 255, 0.97);
+  --overlay-bg: rgba(255, 255, 255, 0.94);
+
+  /* Menu lateral: cor e tinta próprias. A tinta sai da cor do menu, então
+     um menu escuro nunca recebe texto escuro.                            */
+  --sidebar-bg: #fafafb;
+  --sidebar-raised: #f2f3f4;
+  --sidebar-ink: #0b0b0d;
+  --sidebar-ink-secondary: #52565e;
+  --sidebar-ink-muted: #767b84;
+  --sidebar-ink-faint: #9aa0a9;
+  --sidebar-line: #e6e7ea;
+  --sidebar-line-soft: #eff0f2;
+  --sidebar-line-strong: #d3d6dc;
+  --sidebar-wash-1: rgba(11, 11, 13, 0.03);
+  --sidebar-wash-2: rgba(11, 11, 13, 0.055);
+  --sidebar-wash-3: rgba(11, 11, 13, 0.08);
+
+  /* ---- Métricas de layout --------------------------------------------- */
+  --sidebar-w: 76px;
+  --sidebar-w-open: 232px;
+  --topbar-h: 64px;
+  --gutter: 24px;
+}

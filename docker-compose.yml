@@ -1,0 +1,44 @@
+# Painel de performance na VPS.
+#
+#   docker compose up -d --build        sobe site + sincronizador
+#   docker compose logs -f web sync     acompanha
+#
+# O banco é o PostgreSQL externo do DATABASE_URL (schema dashboard_clientes);
+# nada de dado fica dentro dos containers.
+
+x-app: &app
+  build: .
+  image: painel-performance:latest
+  restart: unless-stopped
+  env_file: .env
+  environment: &app-env
+    PULSE_DEBUG: "false"
+    TZ: America/Sao_Paulo
+    # Obrigatória: assina o cookie de sessão. Sem ela o código usa uma chave
+    # pública de exemplo e qualquer um poderia forjar um login.
+    # Gerar uma: python3 -c "import secrets; print(secrets.token_urlsafe(48))"
+    PULSE_SECRET_KEY: '${PULSE_SECRET_KEY:?defina PULSE_SECRET_KEY no arquivo .env}'
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  web:
+    <<: *app
+    environment:
+      <<: *app-env
+      # A sincronização roda no serviço `sync`, não dentro do site: o site tem
+      # vários processos, e cada um subiria a própria sincronização.
+      ADS_SYNC_EMBEDDED: "false"
+      PORT: "7000"
+    ports:
+      - "7000:7000"
+
+  sync:
+    <<: *app
+    command: ["python", "sync_worker.py", "--interval", "600"]
+    # Não atende HTTP: a checagem de saúde da imagem (GET /login) não se aplica.
+    healthcheck:
+      disable: true

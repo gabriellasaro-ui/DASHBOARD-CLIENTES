@@ -1,0 +1,22 @@
+# Segredos nunca entram na imagem: o compose lê o .env na hora de subir.
+.env
+.env.*
+!.env.example
+
+# Estado local e artefatos
+__pycache__/
+*.py[cod]
+.pytest_cache/
+data/
+runtime/
+*.log
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Só para desenvolvimento
+tests/
+docker-compose.yml
+Dockerfile
+.dockerignore

@@ -1,0 +1,1474 @@
+/* ==========================================================================
+   LAYOUT — shell, sidebar, topbar, grades e blocos de página
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   SHELL
+   -------------------------------------------------------------------------- */
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--plane);
+}
+
+.shell__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell__content {
+  flex: 1;
+  min-width: 0;
+  padding: var(--gutter);
+  max-width: 1680px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Na tela de login o shell some — sobra só o conteúdo em tela cheia. */
+.shell--auth .sidebar,
+.shell--auth .topbar { display: none; }
+.shell--auth .shell__content { padding: 0; max-width: none; }
+
+/* --------------------------------------------------------------------------
+   SIDEBAR
+   -------------------------------------------------------------------------- */
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-w);
+  height: 100vh;
+  flex: none;
+  padding: 14px 10px 12px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--line);
+  overflow: visible;
+  transition: width var(--t) var(--ease), transform var(--t) var(--ease);
+}
+
+/* Dentro do menu, texto, linhas, realces e superfícies são os do menu. Tudo
+   que mora nele (itens, conta, popover do usuário) segue a cor escolhida
+   para o menu sem precisar de regra própria. A miniatura do editor de
+   aparência usa o mesmo escopo, para a prévia ser fiel. */
+.sidebar,
+.theme-preview__sidebar {
+  --ink: var(--sidebar-ink);
+  --ink-secondary: var(--sidebar-ink-secondary);
+  --ink-muted: var(--sidebar-ink-muted);
+  --ink-faint: var(--sidebar-ink-faint);
+  --line: var(--sidebar-line);
+  --line-soft: var(--sidebar-line-soft);
+  --line-strong: var(--sidebar-line-strong);
+  --wash-1: var(--sidebar-wash-1);
+  --wash-2: var(--sidebar-wash-2);
+  --wash-3: var(--sidebar-wash-3);
+  --surface: var(--sidebar-bg);
+  --surface-raised: var(--sidebar-raised);
+  --surface-sunken: var(--sidebar-raised);
+  --surface-hover: var(--sidebar-raised);
+  color: var(--ink);
+}
+
+.sidebar--expanded { width: var(--sidebar-w-open); padding-left: 12px; padding-right: 12px; }
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-direction: column;
+  padding: 2px 0 16px;
+}
+
+.sidebar--expanded .sidebar__brand { flex-direction: row; padding: 4px 8px 22px; }
+.sidebar__brand-actions { display: flex; align-items: center; gap: 4px; }
+.sidebar__resize { width: 34px; height: 34px; }
+.sidebar--expanded .sidebar__resize .icon { transform: rotate(180deg); }
+
+.sidebar--compact:not(.sidebar--expanded) .logo__text,
+.sidebar--compact:not(.sidebar--expanded) .sidebar__section,
+.sidebar--compact:not(.sidebar--expanded) .nav-item__label,
+.sidebar--compact:not(.sidebar--expanded) .nav-item__badge,
+.sidebar--compact:not(.sidebar--expanded) .sidebar__account-text,
+.sidebar--compact:not(.sidebar--expanded) .sidebar__account > .icon { display: none; }
+
+.sidebar--compact:not(.sidebar--expanded) .sidebar__nav { gap: 6px; }
+.sidebar--compact:not(.sidebar--expanded) .nav-item { justify-content: center; padding: 0; }
+.sidebar--compact:not(.sidebar--expanded) .nav-item--active::before { left: -10px; }
+.sidebar--compact:not(.sidebar--expanded) .sidebar__account { justify-content: center; padding: 8px 0; }
+
+.sidebar__nav { display: flex; flex-direction: column; gap: 2px; }
+
+.sidebar__section {
+  padding: 20px 10px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 10px;
+  border-radius: var(--r-control);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+.nav-item:hover { background: var(--wash-2); color: var(--ink); }
+
+.nav-item--active {
+  background: var(--brand-tint);
+  color: var(--brand);
+}
+
+/* Marcador do item ativo: uma barra fina à esquerda, não um bloco chapado */
+.nav-item--active::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 18px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand);
+}
+
+.nav-item__label { flex: 1; min-width: 0; }
+
+.nav-item__badge {
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  background: var(--wash-2);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-item--active .nav-item__badge { background: var(--brand-tint); color: var(--brand); }
+
+/* Logo de terceiro: mantém proporção e não recebe a cor do cliente */
+.platform-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  object-fit: contain;
+}
+
+.platform-mark--fallback {
+  border-radius: 6px;
+  background: var(--surface-sunken);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+.sidebar__footer { position: relative; margin-top: auto; padding-top: 12px; }
+
+.sidebar__account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--r-control);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: left;
+  transition: border-color var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+.sidebar__account:hover { border-color: var(--line-strong); background: var(--wash-1); }
+
+.sidebar__account-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   TOPBAR
+   -------------------------------------------------------------------------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: var(--topbar-h);
+  padding: 12px var(--gutter);
+  /* Quase opaca: a 85% o conteúdo rolando por baixo aparecia através da
+     barra e se misturava com o nome do cliente. O blur é enfeite, não pode
+     ser o que garante a legibilidade. */
+  background: var(--topbar-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar__identity { min-width: 0; flex: 1; }
+
+.topbar__client {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.topbar__actions { display: flex; align-items: center; gap: 8px; flex: none; }
+
+.topbar__sep { width: 1px; height: 20px; background: var(--line); flex: none; }
+
+/* Cabeçalho da página, abaixo da topbar */
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.page-head__title { display: flex; align-items: center; gap: 10px; }
+
+/* --------------------------------------------------------------------------
+   GRADE DE KPIs
+   -------------------------------------------------------------------------- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.kpi-grid > * { min-width: 0; }
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 13px 14px;
+  min-height: 96px;
+}
+
+/* Hover próprio do KPI: o card cresce 2% e a borda acende. Sutil de
+   propósito — são muitos cards lado a lado, algo maior vira ruído. */
+.kpi:hover {
+  transform: scale(1.02);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-card-hover);
+  z-index: 1;
+}
+
+.kpi__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kpi__label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpi__icon { color: var(--ink-faint); transition: color var(--t) var(--ease); }
+.kpi:hover .kpi__icon { color: var(--brand); }
+
+.kpi__value {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.kpi__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.kpi__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kpi__delta--positive { color: var(--positive); }
+.kpi__delta--negative { color: var(--negative); }
+.kpi__delta--flat { color: var(--ink-muted); }
+
+.kpi__compare {
+  font-size: 10px;
+  color: var(--ink-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpi__spark { flex: none; }
+
+/* --------------------------------------------------------------------------
+   GRADE DE GRÁFICOS
+   -------------------------------------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* CRÍTICO: item de grade nasce com `min-width: auto`, ou seja, nunca fica
+   menor que o conteúdo. O SVG do Plotly tem largura mínima própria, então
+   sem isto o card estoura a coluna e passa por cima do vizinho. */
+.grid > * { min-width: 0; }
+
+/* Só os spans realmente usados. Um sistema de 12 colunas não precisa
+   declarar as 12 larguras se o produto usa três. */
+.span-4, .span-6, .span-8 { grid-column: span 12; }
+
+/* Legenda dos gráficos — identidade nunca depende só da cor:
+   há swatch + nome + valor em texto.                                      */
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+
+.legend__item { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: var(--ink-secondary); }
+
+.legend__swatch { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.legend__swatch--line { width: 14px; height: 2px; border-radius: 2px; }
+.legend__value { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* --- Personalização do gráfico -------------------------------------------
+   A legenda some antes do botão em tela estreita: quem está no celular
+   precisa mais do controle do que da lista de cores. */
+.chart-card__legend { display: none; }
+
+@media (min-width: 1100px) {
+  .chart-card__legend { display: block; }
+}
+
+.chart-pick__list { display: flex; flex-direction: column; gap: 2px; max-height: 320px; overflow-y: auto; }
+.chart-pick__row { display: flex; align-items: center; gap: 8px; }
+
+/* Métrica marcada abre a paleta embaixo, então a linha vira bloco */
+.chart-pick__row--on {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.chart-pick {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  color: var(--ink-secondary);
+  text-align: left;
+  transition: background-color var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+.chart-pick:hover { background: var(--wash-2); color: var(--ink); }
+.chart-pick--on { color: var(--ink); }
+
+.chart-pick__check {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  transition: background-color var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+
+.chart-pick__check--on {
+  border-color: var(--brand);
+  background-color: var(--brand);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M6.2 11.1 3.5 8.4l1-1 1.7 1.7 4.3-4.3 1 1z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.chart-pick__label { flex: 1; min-width: 0; }
+.chart-pick__unit { font-size: 10px; color: var(--ink-faint); }
+
+/* A cor só é editável quando a métrica está no gráfico */
+.chart-pick__color { width: 40px; height: 30px; }
+.chart-pick__color:disabled { opacity: 0.3; pointer-events: none; }
+
+/* O gráfico é clipado no card: nada que o Plotly desenhe fora da caixa
+   pode aparecer por cima do card seguinte. */
+.chart-wrap {
+  position: relative;
+  overflow: hidden;
+  padding: 0 8px 8px;
+}
+
+/* O Chart.js mede o pai: o canvas ocupa a altura fixada no container. */
+.chart-wrap > canvas { display: block; max-width: 100%; }
+
+/* --------------------------------------------------------------------------
+   FUNIL — HTML puro: cada etapa é uma barra com largura proporcional
+   -------------------------------------------------------------------------- */
+.funnel { display: flex; flex-direction: column; gap: 2px; padding: 4px 20px 20px; }
+
+.funnel__stage { display: flex; flex-direction: column; gap: 5px; }
+
+.funnel__meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+
+.funnel__name { font-size: 11px; font-weight: 500; color: var(--ink-secondary); }
+
+.funnel__value { font-size: 12px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.funnel__bar {
+  height: 28px;
+  border-radius: 5px;
+  transition: filter var(--t) var(--ease);
+}
+
+.funnel__stage:hover .funnel__bar { filter: brightness(1.08); }
+
+/* Passo entre etapas: a taxa de conversão mora no espaço vazio, não na barra */
+.funnel__step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0 8px 10px;
+  font-size: 10px;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.funnel__step-line { width: 1px; height: 12px; background: var(--line-strong); }
+
+/* --------------------------------------------------------------------------
+   TABELA
+   -------------------------------------------------------------------------- */
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+/* min-width: 0 aqui também: a tabela tem largura mínima própria e sem isto
+   o card cresceria junto com ela em vez de rolar por dentro. */
+.table-scroll { min-width: 0; overflow-x: auto; }
+
+.table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  padding: 0;
+  background: var(--surface-sunken);
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.th-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  height: 38px;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  transition: color var(--t) var(--ease);
+}
+
+.th-btn:hover { color: var(--ink-secondary); }
+.th-btn--active { color: var(--ink); }
+.th-btn--num { justify-content: flex-end; }
+
+.th-btn__arrow { opacity: 0; transition: opacity var(--t) var(--ease); }
+.th-btn:hover .th-btn__arrow { opacity: 0.5; }
+.th-btn--active .th-btn__arrow { opacity: 1; color: var(--brand); }
+
+.table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 12px;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+}
+
+.table tbody tr { transition: background-color var(--t) var(--ease); }
+.table tbody tr:hover { background: var(--surface-hover); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+.td-num { text-align: right; font-variant-numeric: tabular-nums; }
+.td-strong { color: var(--ink); font-weight: 500; }
+
+.td-name {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 340px;
+}
+
+.td-name__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-weight: 500; }
+
+.creative-cell { width: 96px; }
+.creative-thumb {
+  display: inline-flex;
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease), transform var(--t) var(--ease);
+}
+.creative-thumb:hover { border-color: var(--line-strong); transform: scale(1.04); }
+.creative-thumb__image { width: 100%; height: 100%; object-fit: cover; display: block; }
+.creative-thumb__empty { font-size: 10px; color: var(--ink-faint); }
+
+/* Card ampliado do anúncio ------------------------------------------------ */
+.ad-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ad-preview-overlay__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 11, 13, 0.62);
+  backdrop-filter: blur(4px);
+}
+
+.ad-preview-overlay__card {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+}
+
+.ad-preview-overlay__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  background: var(--overlay-bg);
+}
+
+.ad-preview__grid { display: grid; grid-template-columns: 1fr; min-height: 520px; }
+.ad-preview__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 320px;
+  padding: 22px;
+  background: #111214;
+}
+.ad-preview__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.ad-preview__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.65);
+}
+.ad-preview__details { display: flex; flex-direction: column; min-width: 0; padding: 30px; }
+.ad-preview__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding-right: 42px; }
+.ad-preview__title { margin-top: 7px; font-size: 22px; line-height: 1.25; letter-spacing: -0.025em; color: var(--ink); }
+.ad-preview__context { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; }
+.ad-preview__context-item {
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-control);
+  background: var(--surface-sunken);
+}
+.ad-preview__context-item strong { display: block; overflow: hidden; margin-top: 4px; color: var(--ink); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.ad-preview__metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
+.ad-preview__metric { padding: 13px 14px; border: 1px solid var(--line-soft); border-radius: var(--r-control); }
+.ad-preview__metric-label { display: block; font-size: 10px; color: var(--ink-muted); }
+.ad-preview__metric-value { display: block; margin-top: 5px; font-size: 16px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ad-preview__original { align-self: flex-start; margin-top: 20px; }
+
+@media (min-width: 860px) {
+  .ad-preview__grid { grid-template-columns: minmax(380px, 0.95fr) minmax(420px, 1.05fr); }
+  .ad-preview__context { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ad-preview__metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Marcador de canal: quadradinho de cor + o nome já diz qual é */
+.channel-dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+
+/* Barra de proporção dentro da célula — comparação relativa sem outro gráfico */
+.cell-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cell-bar__track {
+  width: 44px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--wash-2);
+  overflow: hidden;
+  flex: none;
+}
+
+.cell-bar__fill { height: 100%; border-radius: var(--r-pill); background: var(--series-1); }
+
+/* --------------------------------------------------------------------------
+   PAINEL DE DESTAQUES / LEILÃO
+   -------------------------------------------------------------------------- */
+.highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background-color var(--t) var(--ease);
+}
+
+.highlight:last-child { border-bottom: none; }
+.highlight:hover { background: var(--surface-hover); }
+
+.highlight__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.highlight__label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 500; color: var(--ink-secondary); }
+.highlight__name { font-size: 12px; font-weight: 500; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.highlight__hint { font-size: 10px; color: var(--ink-faint); }
+.highlight__value { font-size: 13px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* --------------------------------------------------------------------------
+   SELETOR DE MÉTRICAS
+   -------------------------------------------------------------------------- */
+.metric-pick {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+.metric-pick .checkbox {
+  padding: 7px 8px;
+  border-radius: var(--r-sm);
+  transition: background-color var(--t) var(--ease);
+}
+
+.metric-pick .checkbox:hover { background: var(--wash-2); }
+
+/* --------------------------------------------------------------------------
+   SCRIM DE POPOVER
+   Camada transparente em tela cheia atrás do menu aberto. É o que dá
+   "clique fora fecha" sem precisar de um listener em JavaScript.
+   -------------------------------------------------------------------------- */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  cursor: default;
+}
+
+/* --------------------------------------------------------------------------
+   ENTRADA — login, convite e cadastro (ui/auth_layout.py)
+   Uma coluna centralizada: marca, cartão, linha de ajuda. Tudo em tokens do
+   tema, então o login de um cliente já sai com as cores e a fonte dele.
+   -------------------------------------------------------------------------- */
+.auth-screen {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 16px;
+  overflow: hidden;
+  background: var(--plane);
+}
+
+/* Halo muito leve na cor da marca, no alto da tela. Camada própria: é a
+   única parte que depende de `color-mix`; sem suporte, some só o brilho. */
+.auth-screen__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(60% 45% at 50% 0%, color-mix(in srgb, var(--brand) 10%, transparent) 0%, transparent 70%);
+}
+
+.auth-screen__column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  animation: fade-up 360ms var(--ease) both;
+}
+
+.auth-brand { display: flex; justify-content: center; margin-bottom: 28px; }
+.auth-brand__logo { display: block; max-width: 168px; max-height: 48px; object-fit: contain; }
+
+.auth-brand__fallback { display: flex; align-items: center; gap: 10px; }
+
+.auth-brand__initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-control);
+  background: var(--brand);
+  color: var(--brand-contrast);
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.auth-brand__name { font-family: var(--font-heading); font-size: 16px; font-weight: 600; color: var(--ink); }
+
+.auth-card {
+  width: 100%;
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.auth-card__title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.auth-card__subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+}
+
+.auth-card__subtitle strong { color: var(--ink); font-weight: 600; }
+
+.auth-card__body { margin-top: 26px; }
+.auth-card__row { margin: 16px 0 22px; }
+
+.auth-screen__footer {
+  margin-top: 20px;
+  max-width: 340px;
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+.auth-screen__link { color: var(--brand); font-weight: 600; }
+
+/* Campo com botão à direita (mostrar senha). */
+.field__with-action { position: relative; }
+.field__with-action .dash-input-container.input .dash-input-element { padding-right: 42px; }
+
+.field__action {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: color var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+
+.field__action:hover { color: var(--ink); background: var(--wash-2); }
+
+/* --------------------------------------------------------------------------
+   ADMINISTRAÇÃO MULTI-TENANT
+   -------------------------------------------------------------------------- */
+.admin-page { min-width: 0; }
+
+/* Os três números moram em UM card, divididos por linhas verticais.
+   Três cards para três números gastavam a largura inteira sem dizer mais. */
+.admin-stats-card { margin-bottom: 18px; }
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.admin-stat__item { padding: 18px 20px; }
+.admin-stat__label { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--ink-secondary); }
+.admin-stat__label .icon { color: var(--brand); }
+.admin-stat__value { margin: 10px 0 3px; font-size: 28px; line-height: 1; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+
+/* --- Detalhe de um cliente ------------------------------------------------
+   Os dois cards são sobre o MESMO cliente, então dividem a largura em vez de
+   deixar meia tela vazia. Identidade recebe mais espaço porque tem campos em
+   par; acessos é uma lista, cabe mais estreito. */
+.admin-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.admin-detail__head { grid-column: 1 / -1; margin-bottom: 2px; }
+
+/* O voltar precisa parecer botão: como link fantasma passava despercebido
+   e a tela dava a impressão de não ter saída. */
+.admin-detail__back { margin-bottom: 14px; }
+
+.admin-detail__title { display: flex; align-items: center; gap: 12px; }
+
+@media (min-width: 1240px) {
+  .admin-detail { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  /* Card sozinho (criação) não estica até o fim da tela: linha de formulário
+     larga demais é difícil de percorrer com o olho. */
+  .admin-detail--single { grid-template-columns: minmax(0, 820px); }
+}
+
+.tenant-logo--lg { width: 44px; height: 44px; }
+
+/* A coluna de ações da tabela encolhe até o conteúdo e fica à direita */
+.admin-table th:last-child,
+.admin-table td:last-child { width: 1%; text-align: right; white-space: nowrap; }
+
+/* O link do convite é o produto da ação — precisa estar visível e
+   selecionável, não escondido atrás de um botão de copiar. */
+.invite-link {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: var(--ink-secondary);
+  background: var(--surface-sunken);
+}
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.form-space { margin-top: 18px; }
+
+/* --------------------------------------------------------------------------
+   SEÇÃO DE FORMULÁRIO
+   O espaçamento é do componente, não escrito à mão em cada uso — era o que
+   deixava os blocos com distâncias diferentes entre si.
+   -------------------------------------------------------------------------- */
+.form-section {
+  padding: 26px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.form-section--first { padding-top: 4px; border-top: none; }
+
+.form-section__head { margin-bottom: 16px; }
+.form-section__body { min-width: 0; }
+
+/* Dentro de uma seção o rodapé não repete a divisória — a própria seção já
+   separa do que vem depois. */
+.form-section .form-actions { border-top: none; padding-top: 0; margin-top: 18px; }
+
+/* Título com peso de verdade: caixa alta minúscula não criava hierarquia,
+   deixava tudo no mesmo nível de leitura. */
+.form-section__title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.form-section__hint {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  max-width: 62ch;
+}
+
+/* Campos e dropdowns na MESMA altura: 40 contra 38 deixava cada linha do
+   formulário com um degrau. */
+.form-section .input,
+.form-section .Select-control { min-height: 40px; }
+.form-section .Select-placeholder,
+.form-section .Select-value { line-height: 38px !important; }
+
+/* Rodapé de formulário: a ação encosta na direita, no fim da leitura */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* Excluir na ponta oposta de salvar: ações de peso oposto não podem ser
+   vizinhas, senão a errada é clicada por proximidade. */
+.form-actions--split { justify-content: space-between; }
+
+.btn--icon-danger { color: var(--ink-muted); }
+.btn--icon-danger:hover { color: var(--negative); background: var(--negative-tint); }
+/* O aviso separa dos DOIS lados. Só as variantes recebem a margem porque só
+   elas ficam visíveis — colado no botão de voltar, aviso e controle viravam
+   um bloco só e a mensagem parecia parte do botão. */
+.admin-feedback { margin: 0; }
+.admin-feedback.form-feedback--error { margin: 18px 0 24px; }
+/* Sucesso aparece no cartão de confirmação (.toast); repetir o texto fixo no
+   topo da página só empurrava o formulário para baixo. Erro fica fixo: precisa
+   ser lido com calma. */
+.admin-feedback.form-feedback--success { display: none; }
+
+.tenant-logo {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  object-fit: contain;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.tenant-logo--fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand);
+  background: var(--brand-tint);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.color-dot { width: 12px; height: 12px; border-radius: 4px; border: 1px solid var(--line-strong); }
+.admin-table { min-width: 760px; }
+.admin-table thead th { height: 38px; padding: 0 14px; font-size: 11px; color: var(--ink-muted); }
+.admin-table__empty { padding: 28px !important; text-align: center; color: var(--ink-muted) !important; }
+
+/* Dropdown do Dash 4 com a cara do design system.
+
+   O Dash 4 desenha o dropdown com variáveis próprias (`--Dash-*`), com fundo
+   branco fixo — num tema escuro o seletor de período virava um bloco branco.
+   As variáveis passam a apontar para os tokens do tema (ver #app-root mais
+   abaixo), e aqui fica só a forma. A `className` cai no botão
+   (`.dash-dropdown`); a lista aberta é irmã dele, dentro do mesmo wrapper. */
+.dash-dropdown.select {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+  transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+
+.dash-dropdown.select:hover { border-color: var(--line-strong); }
+
+.dash-dropdown.select:focus,
+.dash-dropdown.select[aria-expanded="true"] {
+  border-color: var(--ink);
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.dash-dropdown.select .dash-dropdown-trigger { min-height: 36px; padding: 0 10px 0 12px; }
+.dash-dropdown.select .dash-dropdown-value { color: var(--ink); font-weight: 500; }
+.dash-dropdown.select .dash-dropdown-trigger-icon { color: var(--ink-muted); fill: var(--ink-muted); }
+
+.dash-dropdown-content {
+  z-index: 70 !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--r-control) !important;
+  background: var(--surface-raised) !important;
+  color: var(--ink);
+  box-shadow: var(--shadow-pop) !important;
+  font-size: 12px;
+}
+
+.dash-dropdown-option {
+  box-shadow: none !important;
+  border-radius: var(--r-sm);
+  margin: 2px 4px;
+  cursor: pointer;
+}
+
+.dash-dropdown-option:hover,
+.dash-dropdown-option:focus-within { background: var(--wash-2); }
+.dash-dropdown-option:has(input:checked) { background: var(--brand-tint); color: var(--ink); font-weight: 600; }
+
+/* Período: largo o bastante para "Últimos 30 dias" sem reticências. A
+   largura vai no wrapper — o botão do Dash ocupa 100% dele, e a regra do Dash
+   é injetada depois, então `width` no botão perdia. */
+.dash-dropdown-wrapper:has(> .period-select) { width: 172px; }
+.period-select.dash-dropdown.select { min-height: 36px; }
+
+.table-status-filter { width: 158px; }
+.table-status-filter .Select-control { min-height: 32px; height: 32px; }
+.table-status-filter .Select-placeholder,
+.table-status-filter .Select-value { line-height: 30px !important; }
+
+.connection-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--negative);
+  border-radius: var(--r-control);
+  background: var(--negative-tint);
+  color: var(--negative);
+  animation: fade-up 300ms var(--ease) both;
+}
+
+/* A variante de erro existia no Python mas não no CSS: o aviso vermelho
+   estava saindo com a aparência do aviso neutro. */
+.connection-notice--error {
+  border-color: rgba(229, 0, 26, 0.28);
+  background: var(--negative-tint);
+  color: var(--negative);
+}
+
+.connection-notice--stale {
+  border-color: var(--warning);
+  background: var(--warning-tint);
+  color: var(--warning);
+}
+
+.connection-notice > .icon { flex: none; margin-top: 1px; }
+.connection-notice strong { display: block; font-size: 13px; color: currentColor; }
+.connection-notice p { margin: 3px 0 0; font-size: 12px; color: var(--ink-secondary); }
+.connection-notice small { display: block; margin-top: 4px; font-size: 10px; color: var(--ink-muted); }
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(7px);
+  color: var(--ink);
+  animation: fade-in 180ms ease both;
+}
+
+/* Versão de entrada, desenhada em HTML puro antes do React montar: fundo
+   opaco, porque ainda não há painel nenhum por baixo para transparecer. */
+.loading-screen--boot {
+  background: var(--surface);
+  backdrop-filter: none;
+  font-family: var(--font);
+}
+
+.loading-screen__logo {
+  max-width: 148px;
+  max-height: 44px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  animation: loading-breathe 1.4s ease-in-out infinite;
+}
+
+.loading-screen__name {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  animation: loading-breathe 1.4s ease-in-out infinite;
+}
+
+/* Componentes do Dash 4 (dropdown, checklist, upload) têm paleta própria:
+   destaque roxo e fundo branco fixo. Aqui ela passa a ser a do tema do
+   cliente; no #app-root, e não no :root, para acompanhar a troca de marca
+   sem recarregar a página. */
+#app-root {
+  --Dash-Fill-Interactive-Strong: var(--brand);
+  --Dash-Fill-Interactive-Weak: var(--brand-tint);
+  --Dash-Fill-Inverse-Strong: var(--surface-raised);
+  --Dash-Fill-Disabled: var(--line-soft);
+  --Dash-Text-Strong: var(--ink);
+  --Dash-Text-Weak: var(--ink-secondary);
+  --Dash-Text-Disabled: var(--ink-faint);
+  --Dash-Stroke-Strong: var(--line-strong);
+  --Dash-Stroke-Weak: var(--line);
+}
+
+.loading-screen__spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--line);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: loading-spin 720ms linear infinite;
+}
+
+.loading-screen strong { font-size: 14px; letter-spacing: -0.01em; }
+.loading-screen > span:last-child { font-size: 11px; color: var(--ink-muted); }
+
+.table tbody tr { transition: background-color var(--t) var(--ease), transform var(--t) var(--ease); }
+.table tbody tr:hover { transform: translateY(-1px); }
+
+
+/* --------------------------------------------------------------------------
+   EDITOR DE APARÊNCIA (/admin)
+   -------------------------------------------------------------------------- */
+
+/* Duas colunas — controles e prévia — quando a seção tem espaço; uma só
+   quando não tem. Decidido pela largura da PRÓPRIA seção (container query),
+   não da janela: o formulário divide a tela com o cartão de acessos. */
+.form-section__body:has(> .appearance) { container-type: inline-size; }
+
+.appearance {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+@container (min-width: 700px) {
+  .appearance { grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); gap: 28px; }
+  .appearance__preview {
+    position: sticky;
+    top: calc(var(--topbar-h) + 16px);
+  }
+}
+
+.appearance__controls { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+
+.appearance__group-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+
+.appearance__title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.appearance__hint { font-size: 11px; color: var(--ink-faint); }
+
+.appearance__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface-sunken);
+}
+
+/* Temas prontos: miniaturas do painel (menu + fundo + card). */
+.theme-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+}
+
+.theme-preset {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease), transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+
+.theme-preset:hover {
+  border-color: var(--brand);
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.theme-preset__thumb {
+  display: flex;
+  overflow: hidden;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--r-control) - 3px);
+}
+
+.theme-preset__menu { flex: none; width: 22%; }
+
+.theme-preset__page {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  padding: 6px;
+}
+
+.theme-preset__line { width: 55%; height: 4px; border-radius: 2px; opacity: 0.85; }
+.theme-preset__card { flex: 1; border-radius: 3px; box-shadow: 0 0 0 1px rgba(127, 127, 127, 0.18); }
+.theme-preset__label { padding: 0 2px; }
+
+/* Amostra de cada opção de cantos. */
+.radius-option { display: inline-flex; align-items: center; gap: 8px; }
+
+.radius-sample {
+  display: inline-block;
+  width: 18px;
+  height: 14px;
+  border: 2px solid var(--ink-muted);
+  border-right: none;
+  border-bottom: none;
+}
+
+.radius-sample--reto { border-top-left-radius: 2px; }
+.radius-sample--suave { border-top-left-radius: 6px; }
+.radius-sample--arredondado { border-top-left-radius: 11px; }
+
+.theme-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--positive);
+}
+
+.theme-check--bad { color: var(--negative); }
+
+/* Miniatura do painel do cliente. As variáveis do tema vêm inline no
+   container; tudo aqui dentro usa os mesmos tokens do painel de verdade. */
+.theme-preview {
+  display: flex;
+  overflow: hidden;
+  min-height: 236px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--plane);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 12px;
+  transition: background-color var(--t) var(--ease);
+}
+
+.theme-preview__sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  width: 52px;
+  padding: 12px 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--line);
+  color: var(--ink-muted);
+}
+
+.theme-preview__mark,
+.theme-preview__logo {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 6px;
+  border-radius: var(--r-sm);
+}
+
+.theme-preview__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand);
+  color: var(--brand-contrast);
+  font-weight: 700;
+}
+
+.theme-preview__logo { object-fit: contain; }
+
+.theme-preview__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-control);
+}
+
+.theme-preview__nav--active { background: var(--brand-tint); color: var(--brand); }
+
+.theme-preview__main { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; padding: 12px; }
+
+.theme-preview__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.theme-preview__top > div { min-width: 0; }
+
+.theme-preview__title,
+.theme-preview__value,
+.theme-preview__card-title { display: block; font-family: var(--font-heading); color: var(--ink); }
+
+.theme-preview__title { font-size: 14px; font-weight: 600; }
+.theme-preview__muted { display: block; font-size: 10px; color: var(--ink-muted); }
+
+.theme-preview__kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.theme-preview__kpi { padding: 10px 12px; }
+.theme-preview__value { margin: 2px 0; font-size: 17px; font-weight: 600; }
+.theme-preview__delta { font-size: 10px; font-weight: 600; color: var(--positive); }
+
+.theme-preview__chart { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; }
+.theme-preview__card-title { font-size: 12px; font-weight: 600; }
+
+.theme-preview__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 52px;
+  border-bottom: 1px solid var(--line);
+}
+
+.theme-preview__bars > span {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: var(--series-1);
+}
+
+
+/* --------------------------------------------------------------------------
+   CONFIRMAÇÃO (toast)
+   Aparece no topo, fica 3,6 s e some sozinha — sem botão de fechar, sem
+   bloquear a tela. `pointer-events: none` depois de sumir para não haver um
+   retângulo invisível roubando cliques.
+   -------------------------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  z-index: 2500;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: min(420px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--positive);
+  border-radius: var(--r-card);
+  background: var(--surface-raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-pop);
+  pointer-events: none;
+  animation: toast-life 3.6s var(--ease) both;
+}
+
+.toast__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--positive-tint);
+  color: var(--positive);
+}
+
+.toast__text { min-width: 0; font-size: 12px; line-height: 1.45; color: var(--ink-secondary); }
+.toast__text strong { display: block; margin-bottom: 2px; font-size: 14px; color: var(--ink); font-family: var(--font-heading); }
+
+@keyframes toast-life {
+  0% { opacity: 0; transform: translate(-50%, -12px) scale(0.98); }
+  8% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -8px) scale(0.98); visibility: hidden; }
+}
+
+/* Movimento reduzido: aparece e some só por opacidade, sem deslizar. */
+@keyframes toast-fade {
+  0% { opacity: 0; }
+  6% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { transform: translateX(-50%); animation-name: toast-fade; }
+}
+
+/* Tela de aparência aberta por quem é visualizador: explica quem pode mudar. */
+.appearance-locked {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 640px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font-size: 13px;
+}
+
+.appearance-locked > .icon { flex: none; margin-top: 2px; color: var(--ink-muted); }
+.appearance-locked strong { display: block; margin-bottom: 3px; color: var(--ink); font-weight: 600; }
+.appearance-locked span { line-height: 1.55; }
