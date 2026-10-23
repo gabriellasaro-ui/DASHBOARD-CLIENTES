@@ -127,6 +127,8 @@ def _login(_clicks, _submit, email, password, remember, search):
             destination = requested
         elif requested.count("/") == 1:
             tenant = get_tenant_by_slug(requested.removeprefix("/"))
-            if tenant and (user["role"] == "superadmin" or user.get("tenant_id") == tenant["id"]):
+            if tenant and (user["role"] == "superadmin" or any(
+                item["tenant_id"] == tenant["id"] for item in user.get("memberships") or []
+            )):
                 destination = requested
     return "Tudo certo. Abrindo o painel…", "form-feedback form-feedback--success", destination

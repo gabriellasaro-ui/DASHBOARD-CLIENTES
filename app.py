@@ -62,7 +62,13 @@ DEBUG = os.getenv("PULSE_DEBUG", "true").lower() == "true"
 # O worker sobe só no processo que de fato serve o painel.
 # Servido por WSGI (gunicorn etc.) o módulo não é `__main__` e não há reloader.
 _reloader_parent = __name__ == "__main__" and DEBUG and os.environ.get("WERKZEUG_RUN_MAIN") != "true"
-if not _reloader_parent:
+# Sob o gunicorn, quem sobe a sincronização é o `post_fork` de
+# gunicorn.conf.py, DENTRO de cada worker. Subir aqui, no import, roda no
+# processo mestre (preload_app) antes do fork: os workers nasciam com travas
+# internas presas pela thread no meio de uma chamada de rede, e toda callback
+# do Dash ficava esperando para sempre — a tela parava em "Carregando".
+_under_gunicorn = os.environ.get("PULSE_GUNICORN") == "1"
+if not _reloader_parent and not _under_gunicorn:
     start_background_worker()
 
 app = dash.Dash(
@@ -144,11 +150,13 @@ def _protect_pages():
             user = current_user()
             if not user:
                 return redirect(f"/login?next={pathname}")
-            if is_superadmin(user):
+            # O endereço curto abre ESTE cliente — para o master e para quem
+            # tem acesso a ele entre outros. Sem acesso, cai no próprio painel.
+            if is_superadmin(user) or any(
+                item["tenant_id"] == tenant["id"] for item in user.get("memberships") or []
+            ):
                 select_active_tenant(tenant["id"])
-                return redirect("/")
-            if user.get("tenant_id") == tenant["id"]:
-                return redirect("/")
+                clear_cache()
             return redirect("/")
 
     protected = {"/", "/meta-ads", "/google-ads", "/campanhas", "/admin", "/aparencia"}
@@ -174,9 +182,14 @@ def _logout():
 
 @server.get("/entrar-como/<int:user_id>")
 def _impersonate(user_id: int):
-    """Passa a ver o produto como o acesso escolhido. Só para o master."""
+    """
+    Passa a ver o produto como o acesso escolhido. Só para o master.
+
+    `?cliente=` é o cliente de onde se clicou: a mesma pessoa pode estar em
+    vários, e a simulação abre naquele.
+    """
     try:
-        start_impersonation(user_id)
+        start_impersonation(user_id, request.args.get("cliente", type=int))
     except (PermissionError, ValueError):
         return redirect("/admin")
     clear_cache()
@@ -619,7 +632,10 @@ def _account_control(_t, _s, _opts, menu_class, active_id, pathname):
         if not (ctx.triggered and ctx.triggered[0].get("value")):
             raise PreventUpdate
         active_id = int(trigger["id"])
-        select_active_tenant(active_id)
+        try:
+            select_active_tenant(active_id)
+        except (PermissionError, ValueError):
+            raise PreventUpdate
         clear_cache()
         open_menu = False
         # Escolher um cliente a partir da lista de clientes abre o painel

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flask import g, has_request_context, session
 
-from core.storage import get_tenant, get_user
+from core.storage import get_tenant, get_user, set_last_tenant
 
 # Sessão e tenant não mudam no meio de uma requisição, mas eram consultados
 # no banco a cada chamada — e são chamados de dezenas de lugares ao montar
@@ -35,19 +35,31 @@ def current_user() -> dict | None:
 
 
 def _load_user() -> dict | None:
-    user = get_user(session.get("user_id"))
+    """
+    O usuário da sessão, no cliente que está aberto (`active_tenant_id`).
+
+    Quem não é master precisa de pelo menos um cliente ativo: se todos os
+    acessos dele foram removidos ou suspensos, a sessão acaba aqui.
+    """
+    user = get_user(session.get("user_id"), session.get("active_tenant_id"))
     if not user or not user.get("active"):
         session.clear()
         return None
-    if user.get("tenant_id") and user.get("tenant_status") != "active":
-        session.clear()
-        return None
+    if user["role"] != "superadmin":
+        if not user.get("tenant_id"):
+            session.clear()
+            return None
+        # O cliente pedido pode ter sido removido desde o último clique;
+        # `get_user` caiu em outro, e a sessão passa a apontar para ele.
+        session["active_tenant_id"] = user["tenant_id"]
     return user
 
 
 def sign_in(user: dict, remember: bool = False) -> None:
     session.clear()
     session["user_id"] = user["id"]
+    if user.get("role") != "superadmin" and user.get("tenant_id"):
+        session["active_tenant_id"] = user["tenant_id"]
     session.permanent = bool(remember)
     invalidate_request_cache()
 
@@ -77,6 +89,8 @@ def _load_tenant(user: dict | None) -> dict | None:
     if not user:
         return None
     if not is_superadmin(user):
+        # O cliente aberto já foi resolvido em `get_user` (só clientes a que
+        # a pessoa tem acesso entram ali).
         return get_tenant(user.get("tenant_id"))
 
     # O master só vê um cliente quando ESCOLHE um. Antes, sem escolha, caía
@@ -90,13 +104,24 @@ def _load_tenant(user: dict | None) -> dict | None:
 
 
 def select_active_tenant(tenant_id: int) -> dict:
+    """
+    Abre outro cliente. O master abre qualquer um; os demais, só os clientes
+    em que têm acesso — o id vem do navegador e não pode ser confiado.
+    """
     user = current_user()
-    if not is_superadmin(user):
-        raise PermissionError("Somente o administrador pode trocar de cliente.")
+    if not user:
+        raise PermissionError("Sessão expirada.")
+    if not is_superadmin(user) and not any(
+        item["tenant_id"] == tenant_id for item in user.get("memberships") or []
+    ):
+        raise PermissionError("Você não tem acesso a este cliente.")
     tenant = get_tenant(tenant_id)
     if not tenant or tenant.get("status") != "active":
         raise ValueError("Cliente não encontrado ou inativo.")
     session["active_tenant_id"] = tenant["id"]
+    if not is_superadmin(user):
+        # Na próxima entrada a pessoa volta para o cliente em que estava.
+        set_last_tenant(user["id"], tenant["id"])
     invalidate_request_cache()
     return tenant
 
@@ -129,20 +154,26 @@ def can_edit_appearance(user: dict | None, tenant: dict | None) -> bool:
 IMPERSONATOR_KEY = "impersonator_id"
 
 
-def start_impersonation(user_id: int) -> dict:
+def start_impersonation(user_id: int, tenant_id: int | None = None) -> dict:
+    """
+    Vê o painel como a pessoa vê. `tenant_id` é o cliente de onde o master
+    clicou: a mesma pessoa pode estar em vários, com papéis diferentes.
+    """
     admin = current_user()
     if not is_superadmin(admin):
         raise PermissionError("Somente o administrador pode simular um acesso.")
 
-    target = get_user(user_id)
+    target = get_user(user_id, tenant_id)
     if not target or not target.get("active"):
         raise ValueError("Acesso não encontrado ou inativo.")
     if target.get("role") == "superadmin":
         raise ValueError("Não há o que simular em outra conta de administrador.")
+    if not target.get("tenant_id"):
+        raise ValueError("Esta pessoa não tem nenhum cliente ativo.")
 
     session["user_id"] = target["id"]
     session[IMPERSONATOR_KEY] = admin["id"]
-    session.pop("active_tenant_id", None)
+    session["active_tenant_id"] = target["tenant_id"]
     invalidate_request_cache()
     return target
 

@@ -8,6 +8,10 @@ por alguns segundos), e thread esperando I/O não segura a CPU.
 
 import os
 
+# Lido pelo app.py no import: sob o gunicorn, nada de thread no processo mestre
+# (ver `post_fork` abaixo).
+os.environ["PULSE_GUNICORN"] = "1"
+
 # Sempre na 7000 — a porta combinada para o painel. Plataformas como o
 # Easypanel injetam `PORT` (80) e apontam o proxy para ela; ouvindo só na
 # `PORT`, um domínio configurado para a 7000 dava "Service is not reachable"
@@ -31,3 +35,19 @@ preload_app = True
 accesslog = "-"
 errorlog = "-"
 loglevel = os.getenv("WEB_LOG_LEVEL", "info")
+
+
+def post_fork(server, worker):
+    """
+    Sincronização embutida sobe AQUI, já dentro do worker.
+
+    Com `preload_app`, tudo que o app.py faz no import roda no mestre, antes do
+    fork. Uma thread viva nesse momento (a sincronização, no meio de uma
+    consulta) deixa travas internas presas na cópia de cada worker, e as
+    callbacks ficavam penduradas para sempre. Depois do fork não há esse risco.
+    Cada worker tenta; a trava em arquivo deixa um só trabalhando
+    (`ADS_SYNC_EMBEDDED=false` desliga, quando há um container `sync` à parte).
+    """
+    from sync_worker import start_background_worker
+
+    start_background_worker()

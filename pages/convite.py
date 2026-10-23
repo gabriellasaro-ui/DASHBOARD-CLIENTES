@@ -17,7 +17,7 @@ from flask import has_request_context, request
 
 from core.auth import sign_in
 from core.branding import brand_for_request, brand_for_tenant
-from core.storage import ROLE_LABELS, accept_invite, authenticate, get_invite
+from core.storage import ROLE_LABELS, accept_invite, get_invite
 from ui.auth_layout import auth_screen
 from ui.icons import icon
 from ui.primitives import field, text_input
@@ -57,7 +57,31 @@ def _notice(state: str):
     return title, description, body
 
 
+def _existing_account_form(invite: dict):
+    """E-mail que já entra em outro cliente: só a senha atual, e o cliente se soma."""
+    role_label = ROLE_LABELS.get(invite["role"], "Acesso")
+    subtitle = [
+        "Você já tem uma conta com ", html.Strong(invite["email"]), ". Confirme sua senha para somar ",
+        html.Strong(invite["tenant_name"]), f" aos seus clientes, como {role_label.lower()}.",
+    ]
+    body = [
+        dcc.Input(id="invite-name", type="hidden", value=invite["name"]),
+        dcc.Input(id="invite-confirm", type="hidden", value=""),
+        field("Sua senha atual", text_input("A senha com que você já entra", "lock", "password",
+                                            id="invite-password", autoComplete="current-password")),
+        html.Button(
+            [html.Span("Adicionar acesso e entrar"), icon("arrow-right", 18)],
+            id="invite-submit", n_clicks=0, className="btn btn--primary btn--lg btn--block",
+            style={"marginTop": "22px"},
+        ),
+        html.Div(id="invite-feedback", className="form-feedback", role="alert"),
+    ]
+    return "Novo cliente no seu acesso", subtitle, body
+
+
 def _form(invite: dict):
+    if invite.get("has_account"):
+        return _existing_account_form(invite)
     role_label = ROLE_LABELS.get(invite["role"], "Acesso")
     subtitle = [
         "Você foi convidado para o painel de ",
@@ -124,16 +148,14 @@ def layout(token: str | None = None, **_query):
     prevent_initial_call=True,
 )
 def _accept(_clicks, token, name, password, confirmation):
-    if password != confirmation:
+    invite = get_invite(token) or {}
+    # Conta existente confirma só a senha atual; conta nova repete a senha.
+    if not invite.get("has_account") and password != confirmation:
         return "As senhas não coincidem.", "form-feedback form-feedback--error", dash.no_update
 
     try:
-        user = accept_invite(token, password=password, name=name)
-        # Entra direto: pedir para digitar de novo o que acabou de ser
-        # definido é um passo sem função.
-        signed = authenticate(user["email"], password)
-        if signed:
-            sign_in(signed)
+        # Entra direto, já no cliente do convite.
+        sign_in(accept_invite(token, password=password, name=name))
     except ValueError as exc:
         return str(exc), "form-feedback form-feedback--error", dash.no_update
 

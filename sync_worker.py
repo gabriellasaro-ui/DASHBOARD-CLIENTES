@@ -156,19 +156,24 @@ def start_background_worker() -> bool:
     chunk_days = int(os.getenv("ADS_SYNC_HISTORY_CHUNK_DAYS", "60"))
 
     def loop() -> None:
-        try:
-            with single_worker():
-                log("sincronizacao automatica ligada")
-                while True:
-                    started = time.monotonic()
-                    try:
-                        run_cycle(refresh_days, backfill_days, chunk_days)
-                    except Exception as exc:  # o painel nao pode cair junto
-                        log(f"ciclo falhou - {type(exc).__name__}: {exc}")
-                    time.sleep(max(30, interval - int(time.monotonic() - started)))
-        except RuntimeError:
-            # Outro worker ja esta cuidando disso.
-            pass
+        # Sob o gunicorn cada processo do site chama esta funcao; so um pega a
+        # trava. Os outros tentam de novo de tempos em tempos em vez de
+        # desistir: se o processo que sincroniza for reciclado (timeout,
+        # reinicio), outro assume e o painel nao fica sem dado novo.
+        while True:
+            try:
+                with single_worker():
+                    log("sincronizacao automatica ligada")
+                    while True:
+                        started = time.monotonic()
+                        try:
+                            run_cycle(refresh_days, backfill_days, chunk_days)
+                        except Exception as exc:  # o painel nao pode cair junto
+                            log(f"ciclo falhou - {type(exc).__name__}: {exc}")
+                        time.sleep(max(30, interval - int(time.monotonic() - started)))
+            except RuntimeError:
+                # Outro processo esta cuidando disso.
+                time.sleep(max(30, interval))
 
     threading.Thread(target=loop, name="ads-sync", daemon=True).start()
     return True

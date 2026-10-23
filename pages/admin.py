@@ -508,7 +508,13 @@ def _access_rows(users: list[dict]):
                                 ],
                                 className="row gap-2",
                             ),
-                            html.Span(user["email"], className="highlight__hint"),
+                            html.Span(
+                                user["email"] + (
+                                    f" · também acessa {user['other_tenants']} outro(s) cliente(s)"
+                                    if user.get("other_tenants") else ""
+                                ),
+                                className="highlight__hint",
+                            ),
                         ],
                         className="col gap-1 grow",
                         style={"minWidth": "0"},
@@ -519,7 +525,7 @@ def _access_rows(users: list[dict]):
                             # então é um link de verdade, não uma callback.
                             html.A(
                                 [icon("log-in", 16), html.Span("Entrar como")],
-                                href=f"/entrar-como/{user['id']}",
+                                href=f"/entrar-como/{user['id']}?cliente={user['tenant_id']}",
                                 className="btn btn--outline btn--sm",
                                 title=f"Ver o painel como {user['name']}",
                             ) if active else None,
@@ -622,7 +628,8 @@ def _access_card(tenant: dict):
                                     field("Nome", text_input("Nome completo", "user",
                                                              id="admin-invite-name")),
                                     field("E-mail", text_input("pessoa@cliente.com", "mail", "email",
-                                                               id="admin-invite-email")),
+                                                               id="admin-invite-email"),
+                                          hint="Já tem conta em outro cliente? Ela aceita com a mesma senha."),
                                 ],
                                 className="form-grid form-grid--2",
                             ),
@@ -1117,13 +1124,14 @@ def _access_action(
             target = users.get(trigger["id"])
             if not target:
                 raise ValueError("Acesso não encontrado.")
-            set_user_active(target["id"], not bool(target["active"]))
+            set_user_active(target["id"], not bool(target["active"]), tenant_id=int(tenant_id))
             message = (f"Acesso de {target['name']} "
                        f"{'desativado' if target['active'] else 'reativado'}.")
 
         elif kind == "admin-user-delete":
-            removed = delete_user(trigger["id"])
-            message = f"Acesso de {removed['name']} excluído."
+            removed = delete_user(trigger["id"], tenant_id=int(tenant_id))
+            message = (f"Acesso de {removed['name']} excluído." if removed["account_deleted"]
+                       else f"{removed['name']} não acessa mais este cliente; os outros clientes dela seguem iguais.")
 
         elif kind == "admin-invite-revoke":
             revoke_invite(trigger["token"])

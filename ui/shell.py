@@ -275,14 +275,18 @@ def account_options(user: dict | None, tenant: dict | None) -> list[dict]:
             if item.get("status") == "active"
         ]
         return sorted(items, key=lambda item: item["id"] != (tenant or {}).get("id"))
-    if tenant:
-        return [{"id": tenant["id"], "nome": tenant["name"], "plano": "Cliente"}]
-    return []
+    # Quem acessa vários clientes troca entre eles pelo mesmo seletor do master,
+    # vendo só os SEUS clientes, com o papel em cada um.
+    roles = {"client_admin": "Responsável", "client": "Visualizador"}
+    return [
+        {"id": item["tenant_id"], "nome": item["tenant_name"], "plano": roles.get(item["role"], "Acesso")}
+        for item in (user or {}).get("memberships") or []
+    ]
 
 
 def _account_menu_items(accounts: list[dict], active_id=None):
     return [
-        html.Div("Trocar de conta", className="pop__label"),
+        html.Div("Trocar de cliente", className="pop__label"),
         *[
             html.Button(
                 [
@@ -290,7 +294,7 @@ def _account_menu_items(accounts: list[dict], active_id=None):
                     html.Span(
                         [
                             html.Span(acc["nome"], className="truncate"),
-                            html.Span(f'Plano {acc["plano"]}', className="pop__item-desc"),
+                            html.Span(acc["plano"], className="pop__item-desc"),
                         ],
                         className="pop__item-text",
                     ),
@@ -383,7 +387,8 @@ def topbar(
                                 style={"width": "260px"},
                             ),
                         ],
-                        className=classes("pop-anchor", None if is_admin and accounts else "hide"),
+                        # Aparece para o master e para quem tem mais de um cliente.
+                        className=classes("pop-anchor", None if (is_admin and accounts) or len(accounts) > 1 else "hide"),
                     ),
 
                     html.Span(className="topbar__sep"),

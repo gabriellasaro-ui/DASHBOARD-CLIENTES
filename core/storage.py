@@ -295,6 +295,53 @@ def init_db() -> None:
                 ),
             )
 
+        _migrate_memberships(db)
+
+
+def _migrate_memberships(db) -> None:
+    """
+    Uma pessoa, vários clientes.
+
+    Antes cada usuário tinha UM `tenant_id` e o e-mail era único — quem
+    atendia dois clientes precisava de dois e-mails. Agora o vínculo é a tabela
+    `tenant_members` (pessoa × cliente, com papel e status por cliente), e o
+    mesmo login entra em quantos clientes tiver acesso.
+
+    A migração copia o vínculo antigo e zera `users.tenant_id` na mesma
+    transação: assim roda uma vez só, e um acesso removido depois não volta
+    na próxima inicialização.
+    """
+    db.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS tenant_members (
+            user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            tenant_id BIGINT NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+            role TEXT NOT NULL CHECK (role IN ('client_admin', 'client')),
+            active SMALLINT NOT NULL DEFAULT 1,
+            created_at TEXT NOT NULL,
+            PRIMARY KEY (user_id, tenant_id)
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_members_tenant ON tenant_members(tenant_id);
+        """
+    )
+    # Último cliente aberto: quem tem vários volta para onde parou.
+    if db.postgres:
+        db.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_tenant_id BIGINT")
+    elif "last_tenant_id" not in {row["name"] for row in db.execute("PRAGMA table_info(users)")}:
+        db.execute("ALTER TABLE users ADD COLUMN last_tenant_id INTEGER")
+
+    db.execute(
+        "INSERT INTO tenant_members (user_id, tenant_id, role, active, created_at) "
+        "SELECT id, tenant_id, role, active, created_at FROM users "
+        "WHERE tenant_id IS NOT NULL AND role IN ('client_admin', 'client') "
+        "ON CONFLICT (user_id, tenant_id) DO NOTHING"
+    )
+    db.execute(
+        "UPDATE users SET last_tenant_id = COALESCE(last_tenant_id, tenant_id), tenant_id = NULL "
+        "WHERE tenant_id IS NOT NULL AND role IN ('client_admin', 'client')"
+    )
+
 
 def _clean_color(value: str | None, fallback: str) -> str:
     value = (value or "").strip().upper()
@@ -341,7 +388,16 @@ def create_tenant(
     if len(tenant_name) < 2:
         raise ValueError("Informe o nome do cliente.")
     slug = _clean_slug(slug)
-    owner_name, owner_email, password = _validate_account(owner_name, owner_email, password)
+    # E-mail que já tem conta vira responsável do cliente novo com a senha que
+    # já usa — a mesma pessoa pode responder por vários clientes. Senha só é
+    # exigida para conta nova.
+    existing = _user_by_email((owner_email or "").strip().lower())
+    if existing and existing["role"] == "superadmin":
+        raise ValueError("Este e-mail é da conta da agência.")
+    if existing:
+        owner_name, owner_email = (owner_name or "").strip() or existing["name"], existing["email"]
+    else:
+        owner_name, owner_email, password = _validate_account(owner_name, owner_email, password)
     primary_color = _clean_color(primary_color, "#E5001A")
     secondary_color = _clean_color(secondary_color, "#0B0B0D")
     meta_ad_account_id = _clean_meta_account_id(meta_ad_account_id)
@@ -362,12 +418,8 @@ def create_tenant(
                 ),
             )
             tenant_id = cursor.fetchone()["id"] if db.postgres else cursor.lastrowid
-            db.execute(
-                "INSERT INTO users "
-                "(tenant_id, name, email, password_hash, role, created_at) "
-                "VALUES (?, ?, ?, ?, 'client_admin', ?)",
-                (tenant_id, owner_name, owner_email, generate_password_hash(password), _now()),
-            )
+            owner_id = existing["id"] if existing else _insert_user(db, owner_name, owner_email, password)
+            _add_membership(db, owner_id, tenant_id, "client_admin")
     except (sqlite3.IntegrityError, psycopg.IntegrityError) as exc:
         message = str(exc).lower()
         if "slug" in message:
@@ -383,44 +435,140 @@ def create_tenant(
     return get_tenant(tenant_id)
 
 
+# --------------------------------------------------------------------------
+# Pessoas e vínculos com clientes
+# --------------------------------------------------------------------------
+
+# Campos do cliente que viajam junto com o usuário (marca, tema, status).
+_TENANT_FIELDS = ("tenant_name", "tenant_slug", "logo_data", "primary_color", "secondary_color",
+                  "theme_data", "tenant_status")
+
+
+def _user_by_email(email: str) -> dict | None:
+    if not email:
+        return None
+    with connection() as db:
+        row = db.execute("SELECT id, name, email, role FROM users WHERE email = ?", (email,)).fetchone()
+    return dict(row) if row else None
+
+
+def _insert_user(db, name: str, email: str, password: str) -> int:
+    """Conta nova, sem cliente: o vínculo é sempre um `_add_membership` à parte."""
+    cursor = db.execute(
+        "INSERT INTO users (tenant_id, name, email, password_hash, role, created_at) "
+        "VALUES (NULL, ?, ?, ?, 'client', ?)" + (" RETURNING id" if db.postgres else ""),
+        (name, email, generate_password_hash(password), _now()),
+    )
+    return cursor.fetchone()["id"] if db.postgres else cursor.lastrowid
+
+
+def _add_membership(db, user_id: int, tenant_id: int, role: str) -> None:
+    """Dá acesso ao cliente; se já existia (talvez desativado), reativa com o papel novo."""
+    db.execute(
+        "INSERT INTO tenant_members (user_id, tenant_id, role, active, created_at) VALUES (?, ?, ?, 1, ?) "
+        "ON CONFLICT (user_id, tenant_id) DO UPDATE SET role = excluded.role, active = 1",
+        (user_id, tenant_id, role, _now()),
+    )
+
+
+def list_user_tenants(user_id: int | None) -> list[dict]:
+    """
+    Clientes que a pessoa pode abrir agora: vínculo ativo e cliente ativo.
+
+    Sem logo nem tema — é a lista do seletor, consultada a cada requisição;
+    a marca completa só é carregada para o cliente aberto.
+    """
+    if not user_id:
+        return []
+    with connection() as db:
+        rows = db.execute(
+            """
+            SELECT m.tenant_id, m.role, t.name AS tenant_name, t.slug AS tenant_slug
+            FROM tenant_members m
+            JOIN tenants t ON t.id = m.tenant_id
+            WHERE m.user_id = ? AND m.active = 1 AND t.status = 'active'
+            ORDER BY t.name
+            """,
+            (user_id,),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def user_has_tenant(user_id: int | None, tenant_id: int | None) -> bool:
+    return any(item["tenant_id"] == tenant_id for item in list_user_tenants(user_id))
+
+
+def set_last_tenant(user_id: int, tenant_id: int | None) -> None:
+    with connection() as db:
+        db.execute("UPDATE users SET last_tenant_id = ? WHERE id = ?", (tenant_id, user_id))
+
+
 def authenticate(email: str | None, password: str | None) -> dict | None:
+    """
+    Confere e-mail e senha e devolve o usuário no cliente em que ele entra.
+
+    Sem nenhum cliente ativo (todos os acessos removidos ou suspensos), não
+    entra: a senha certa não basta para ver um painel vazio.
+    """
     email = (email or "").strip().lower()
     with connection() as db:
         row = db.execute(
-            """
-            SELECT u.*, t.name AS tenant_name, t.slug AS tenant_slug,
-                   t.logo_data, t.primary_color, t.secondary_color, t.theme_data, t.status AS tenant_status
-            FROM users u
-            LEFT JOIN tenants t ON t.id = u.tenant_id
-            WHERE u.email = ?
-            """,
-            (email,),
+            "SELECT id, password_hash, active FROM users WHERE email = ?", (email,)
         ).fetchone()
     if not row or not row["active"] or not check_password_hash(row["password_hash"], password or ""):
         return None
-    if row["tenant_id"] and row["tenant_status"] != "active":
+    user = get_user(row["id"])
+    if not user or (user["role"] != "superadmin" and not user.get("tenant_id")):
         return None
-    result = dict(row)
-    result.pop("password_hash", None)
-    return result
+    return user
 
 
-def get_user(user_id: int | None) -> dict | None:
+def get_user(user_id: int | None, tenant_id: int | None = None) -> dict | None:
+    """
+    O usuário NO CONTEXTO de um cliente.
+
+    `tenant_id`, `role` e os campos de marca são os do cliente aberto: o pedido
+    (`tenant_id`), senão o último que a pessoa abriu, senão o primeiro por
+    nome. Assim quem lê `user["role"]` recebe o papel NAQUELE cliente — a mesma
+    pessoa pode ser responsável num cliente e visualizadora em outro.
+    `memberships` traz todos os clientes que ela pode abrir (o seletor do topo).
+    """
     if not user_id:
         return None
     with connection() as db:
         row = db.execute(
-            """
-            SELECT u.id, u.tenant_id, u.name, u.email, u.role, u.active,
-                   t.name AS tenant_name, t.slug AS tenant_slug, t.logo_data,
-                   t.primary_color, t.secondary_color, t.theme_data, t.status AS tenant_status
-            FROM users u
-            LEFT JOIN tenants t ON t.id = u.tenant_id
-            WHERE u.id = ?
-            """,
+            "SELECT id, name, email, role, active, last_tenant_id, created_at FROM users WHERE id = ?",
             (user_id,),
         ).fetchone()
-    return dict(row) if row else None
+    if not row:
+        return None
+
+    user = {**dict(row), "tenant_id": None, **{field: None for field in _TENANT_FIELDS}, "memberships": []}
+    if user["role"] == "superadmin":
+        return user
+
+    memberships = list_user_tenants(user_id)
+    by_id = {item["tenant_id"]: item for item in memberships}
+    chosen = by_id.get(tenant_id) or by_id.get(user["last_tenant_id"]) or (memberships[0] if memberships else None)
+    user["memberships"] = memberships
+    # Sem cliente aberto o papel é o mais restrito; `authenticate` e a sessão
+    # recusam esse usuário de qualquer forma.
+    user["role"] = chosen["role"] if chosen else "client"
+    if not chosen:
+        return user
+
+    tenant = get_tenant(chosen["tenant_id"]) or {}
+    user.update(
+        tenant_id=chosen["tenant_id"],
+        tenant_name=tenant.get("name"),
+        tenant_slug=tenant.get("slug"),
+        logo_data=tenant.get("logo_data"),
+        primary_color=tenant.get("primary_color"),
+        secondary_color=tenant.get("secondary_color"),
+        theme_data=tenant.get("theme_data"),
+        tenant_status=tenant.get("status"),
+    )
+    return user
 
 
 def get_tenant(tenant_id: int | None) -> dict | None:
@@ -430,10 +578,11 @@ def get_tenant(tenant_id: int | None) -> dict | None:
         row = db.execute(
             """
             SELECT t.*,
-                   COUNT(u.id) AS user_count,
-                   MAX(CASE WHEN u.role = 'client_admin' THEN u.email END) AS owner_email
+                   COUNT(m.user_id) AS user_count,
+                   MAX(CASE WHEN m.role = 'client_admin' THEN u.email END) AS owner_email
             FROM tenants t
-            LEFT JOIN users u ON u.tenant_id = t.id
+            LEFT JOIN tenant_members m ON m.tenant_id = t.id
+            LEFT JOIN users u ON u.id = m.user_id
             WHERE t.id = ?
             GROUP BY t.id
             """,
@@ -451,10 +600,11 @@ def get_tenant_by_slug(slug: str | None) -> dict | None:
         row = db.execute(
             """
             SELECT t.*,
-                   COUNT(u.id) AS user_count,
-                   MAX(CASE WHEN u.role = 'client_admin' THEN u.email END) AS owner_email
+                   COUNT(m.user_id) AS user_count,
+                   MAX(CASE WHEN m.role = 'client_admin' THEN u.email END) AS owner_email
             FROM tenants t
-            LEFT JOIN users u ON u.tenant_id = t.id
+            LEFT JOIN tenant_members m ON m.tenant_id = t.id
+            LEFT JOIN users u ON u.id = m.user_id
             WHERE t.slug = ?
             GROUP BY t.id
             """,
@@ -468,10 +618,11 @@ def list_tenants() -> list[dict]:
         rows = db.execute(
             """
             SELECT t.*,
-                   COUNT(u.id) AS user_count,
-                   MAX(CASE WHEN u.role = 'client_admin' THEN u.email END) AS owner_email
+                   COUNT(m.user_id) AS user_count,
+                   MAX(CASE WHEN m.role = 'client_admin' THEN u.email END) AS owner_email
             FROM tenants t
-            LEFT JOIN users u ON u.tenant_id = t.id
+            LEFT JOIN tenant_members m ON m.tenant_id = t.id
+            LEFT JOIN users u ON u.id = m.user_id
             GROUP BY t.id
             ORDER BY t.created_at DESC
             """
@@ -656,7 +807,8 @@ def tenant_stats() -> dict:
             "SELECT COUNT(*) AS total, COUNT(*) FILTER (WHERE status = 'active') AS active FROM tenants"
         ).fetchone()
         user_row = db.execute(
-            "SELECT COUNT(*) AS total FROM users WHERE role != 'superadmin' AND active = 1"
+            "SELECT COUNT(DISTINCT u.id) AS total FROM users u "
+            "JOIN tenant_members m ON m.user_id = u.id WHERE u.active = 1 AND m.active = 1"
         ).fetchone()
     return {
         "tenants": tenant_row["total"] or 0,
@@ -844,20 +996,64 @@ ROLE_LABELS = {
 
 
 def list_tenant_users(tenant_id: int | None) -> list[dict]:
-    """Usuários de um cliente — o responsável primeiro, depois por nome."""
+    """
+    Quem acessa um cliente — o responsável primeiro, depois por nome.
+
+    `role` e `active` são os DESTE cliente. `other_tenants` diz em quantos
+    outros clientes a mesma pessoa entra (o admin precisa saber que remover o
+    acesso aqui não tira a pessoa dos outros).
+    """
     if not tenant_id:
         return []
     with connection() as db:
         rows = db.execute(
             """
-            SELECT id, tenant_id, name, email, role, active, created_at
-            FROM users
-            WHERE tenant_id = ?
-            ORDER BY CASE WHEN role = 'client_admin' THEN 0 ELSE 1 END, name
+            SELECT u.id, m.tenant_id, u.name, u.email, m.role,
+                   CASE WHEN m.active = 1 AND u.active = 1 THEN 1 ELSE 0 END AS active,
+                   m.created_at,
+                   (SELECT COUNT(*) FROM tenant_members o
+                    WHERE o.user_id = u.id AND o.tenant_id != m.tenant_id) AS other_tenants
+            FROM tenant_members m
+            JOIN users u ON u.id = m.user_id
+            WHERE m.tenant_id = ?
+            ORDER BY CASE WHEN m.role = 'client_admin' THEN 0 ELSE 1 END, u.name
             """,
             (tenant_id,),
         ).fetchall()
     return [dict(row) for row in rows]
+
+
+def _membership(db, user_id: int, tenant_id: int | None) -> dict:
+    """
+    O vínculo a alterar. Sem `tenant_id`, só vale se a pessoa tiver um cliente
+    só — com vários, mexer "no acesso" sem dizer de qual cliente é ambíguo.
+    """
+    user = db.execute("SELECT id, name, email, role FROM users WHERE id = ?", (user_id,)).fetchone()
+    if not user:
+        raise ValueError("Acesso não encontrado.")
+    if user["role"] == "superadmin":
+        raise ValueError("A conta da agência não é alterada por aqui.")
+    if tenant_id is None:
+        rows = db.execute("SELECT tenant_id FROM tenant_members WHERE user_id = ?", (user_id,)).fetchall()
+        if len(rows) != 1:
+            raise ValueError("Informe de qual cliente é o acesso.")
+        tenant_id = rows[0]["tenant_id"]
+    member = db.execute(
+        "SELECT user_id, tenant_id, role, active FROM tenant_members WHERE user_id = ? AND tenant_id = ?",
+        (user_id, tenant_id),
+    ).fetchone()
+    if not member:
+        raise ValueError("Esta pessoa não tem acesso a este cliente.")
+    return {**dict(member), "name": user["name"], "email": user["email"]}
+
+
+def _other_owners(db, tenant_id: int, user_id: int, *, active_only: bool = False) -> int:
+    """Responsáveis do cliente além desta pessoa — o cliente nunca pode ficar sem nenhum."""
+    query = ("SELECT COUNT(*) AS total FROM tenant_members "
+             "WHERE tenant_id = ? AND role = 'client_admin' AND user_id != ?")
+    if active_only:
+        query += " AND active = 1"
+    return db.execute(query, (tenant_id, user_id)).fetchone()["total"]
 
 
 def _clean_role(role: str | None) -> str:
@@ -874,8 +1070,18 @@ def _clean_email(email: str | None) -> str:
     return email
 
 
-def update_user(user_id: int, *, name: str | None, email: str | None, role: str | None) -> dict:
-    """Edita um acesso. Trocar o e-mail do responsável muda o login dele."""
+def update_user(
+    user_id: int,
+    *,
+    name: str | None,
+    email: str | None,
+    role: str | None,
+    tenant_id: int | None = None,
+) -> dict:
+    """
+    Edita um acesso. Nome e e-mail são da PESSOA (valem em todos os clientes
+    dela); o papel é deste cliente. Trocar o e-mail muda o login dela.
+    """
     name = (name or "").strip()
     if len(name) < 2:
         raise ValueError("Informe o nome da pessoa.")
@@ -883,34 +1089,22 @@ def update_user(user_id: int, *, name: str | None, email: str | None, role: str 
     role = _clean_role(role)
 
     with connection() as db:
-        current = db.execute(
-            "SELECT id, tenant_id, role FROM users WHERE id = ?", (user_id,)
-        ).fetchone()
-        if not current:
-            raise ValueError("Acesso não encontrado.")
-        if current["role"] == "superadmin":
-            raise ValueError("A conta da agência não é editada por aqui.")
-
+        member = _membership(db, user_id, tenant_id)
         # Todo cliente precisa manter pelo menos um responsável, senão
         # ninguém consegue administrar os acessos daquele ambiente.
-        if current["role"] == "client_admin" and role != "client_admin":
-            remaining = db.execute(
-                "SELECT COUNT(*) AS total FROM users "
-                "WHERE tenant_id = ? AND role = 'client_admin' AND id != ?",
-                (current["tenant_id"], user_id),
-            ).fetchone()
-            if not remaining["total"]:
+        if member["role"] == "client_admin" and role != "client_admin":
+            if not _other_owners(db, member["tenant_id"], user_id):
                 raise ValueError("O cliente precisa de pelo menos um responsável.")
-
         try:
-            db.execute(
-                "UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?",
-                (name, email, role, user_id),
-            )
+            db.execute("UPDATE users SET name = ?, email = ? WHERE id = ?", (name, email, user_id))
         except (sqlite3.IntegrityError, psycopg.IntegrityError) as exc:
             raise ValueError("Este e-mail já possui uma conta.") from exc
+        db.execute(
+            "UPDATE tenant_members SET role = ? WHERE user_id = ? AND tenant_id = ?",
+            (role, user_id, member["tenant_id"]),
+        )
 
-    return get_user(user_id)
+    return get_user(user_id, member["tenant_id"])
 
 
 def set_user_password(user_id: int, password: str | None) -> None:
@@ -926,45 +1120,40 @@ def set_user_password(user_id: int, password: str | None) -> None:
         )
 
 
-def delete_user(user_id: int) -> dict:
+def delete_user(user_id: int, tenant_id: int | None = None) -> dict:
     """
-    Remove um acesso em definitivo.
+    Tira o acesso da pessoa a um cliente.
 
-    Diferente de desativar: desativar suspende o login e preserva o histórico;
-    excluir apaga a pessoa. O último responsável continua protegido — sem ele
-    o cliente ficaria sem ninguém para administrá-lo.
+    Se era o único cliente dela, a conta inteira some (sem cliente, o login
+    não abriria nada). Se ela acessa outros, só este vínculo sai — a pessoa
+    continua entrando nos demais com a mesma senha. O último responsável do
+    cliente continua protegido.
     """
     with connection() as db:
-        current = db.execute(
-            "SELECT id, tenant_id, name, email, role FROM users WHERE id = ?", (user_id,)
-        ).fetchone()
-        if not current:
-            raise ValueError("Acesso não encontrado.")
-        if current["role"] == "superadmin":
-            raise ValueError("A conta da agência não pode ser excluída.")
-        if current["role"] == "client_admin":
-            remaining = db.execute(
-                "SELECT COUNT(*) AS total FROM users "
-                "WHERE tenant_id = ? AND role = 'client_admin' AND id != ?",
-                (current["tenant_id"], user_id),
-            ).fetchone()
-            if not remaining["total"]:
-                raise ValueError(
-                    "Este é o único responsável do cliente. Promova outra pessoa antes de excluir."
-                )
-        db.execute("DELETE FROM users WHERE id = ?", (user_id,))
-    return dict(current)
+        member = _membership(db, user_id, tenant_id)
+        if member["role"] == "client_admin" and not _other_owners(db, member["tenant_id"], user_id):
+            raise ValueError(
+                "Este é o único responsável do cliente. Promova outra pessoa antes de excluir."
+            )
+        db.execute(
+            "DELETE FROM tenant_members WHERE user_id = ? AND tenant_id = ?", (user_id, member["tenant_id"])
+        )
+        remaining = db.execute(
+            "SELECT COUNT(*) AS total FROM tenant_members WHERE user_id = ?", (user_id,)
+        ).fetchone()["total"]
+        if not remaining:
+            db.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    return {**member, "id": user_id, "account_deleted": not remaining}
 
 
 def delete_tenant(tenant_id: int) -> dict:
     """
     Remove o cliente e tudo que depende dele.
 
-    Apaga acessos, convites e as métricas já sincronizadas — as tabelas usam
-    ON DELETE CASCADE, mas o SQLite só honra isso com `PRAGMA foreign_keys`
-    ligado (já é o caso em `connection()`); no Postgres é nativo. As linhas
-    de mídia são apagadas explicitamente para o comportamento ser o mesmo nos
-    dois bancos, e não depender de qual está em uso.
+    Apaga vínculos, convites e as métricas já sincronizadas. Quem só acessava
+    este cliente perde a conta junto; quem acessa outros continua entrando
+    neles. As linhas de mídia são apagadas explicitamente para o comportamento
+    ser o mesmo no SQLite e no Postgres, sem depender de ON DELETE CASCADE.
     """
     with connection() as db:
         tenant = db.execute(
@@ -973,33 +1162,36 @@ def delete_tenant(tenant_id: int) -> dict:
         if not tenant:
             raise ValueError("Cliente não encontrado.")
 
-        for table in ("media_daily_metrics", "media_sync_state", "media_sync_windows"):
+        members = [row["user_id"] for row in db.execute(
+            "SELECT user_id FROM tenant_members WHERE tenant_id = ?", (tenant_id,)
+        ).fetchall()]
+        for table in ("media_daily_metrics", "media_sync_state", "media_sync_windows", "media_period_reach"):
             db.execute(f"DELETE FROM {table} WHERE tenant_id = ?", (tenant_id,))
         db.execute("DELETE FROM user_invites WHERE tenant_id = ?", (tenant_id,))
-        db.execute("DELETE FROM users WHERE tenant_id = ?", (tenant_id,))
+        db.execute("DELETE FROM tenant_members WHERE tenant_id = ?", (tenant_id,))
+        for user_id in members:
+            left = db.execute(
+                "SELECT COUNT(*) AS total FROM tenant_members WHERE user_id = ?", (user_id,)
+            ).fetchone()["total"]
+            if not left:
+                db.execute("DELETE FROM users WHERE id = ? AND role != 'superadmin'", (user_id,))
+        db.execute("UPDATE users SET last_tenant_id = NULL WHERE last_tenant_id = ?", (tenant_id,))
         db.execute("DELETE FROM tenants WHERE id = ?", (tenant_id,))
 
     return dict(tenant)
 
 
-def set_user_active(user_id: int, active: bool) -> None:
+def set_user_active(user_id: int, active: bool, tenant_id: int | None = None) -> None:
+    """Suspende ou reativa o acesso a UM cliente; os outros clientes da pessoa seguem iguais."""
     with connection() as db:
-        current = db.execute(
-            "SELECT id, tenant_id, role FROM users WHERE id = ?", (user_id,)
-        ).fetchone()
-        if not current:
-            raise ValueError("Acesso não encontrado.")
-        if current["role"] == "superadmin":
-            raise ValueError("A conta da agência não pode ser desativada.")
-        if not active and current["role"] == "client_admin":
-            remaining = db.execute(
-                "SELECT COUNT(*) AS total FROM users "
-                "WHERE tenant_id = ? AND role = 'client_admin' AND active = 1 AND id != ?",
-                (current["tenant_id"], user_id),
-            ).fetchone()
-            if not remaining["total"]:
+        member = _membership(db, user_id, tenant_id)
+        if not active and member["role"] == "client_admin":
+            if not _other_owners(db, member["tenant_id"], user_id, active_only=True):
                 raise ValueError("O cliente ficaria sem nenhum responsável ativo.")
-        db.execute("UPDATE users SET active = ? WHERE id = ?", (1 if active else 0, user_id))
+        db.execute(
+            "UPDATE tenant_members SET active = ? WHERE user_id = ? AND tenant_id = ?",
+            (1 if active else 0, user_id, member["tenant_id"]),
+        )
 
 
 # --------------------------------------------------------------------------
@@ -1036,15 +1228,23 @@ def create_invite(
         tenant = db.execute("SELECT id FROM tenants WHERE id = ?", (tenant_id,)).fetchone()
         if not tenant:
             raise ValueError("Cliente não encontrado.")
-        taken = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
-        if taken:
-            raise ValueError("Este e-mail já possui uma conta.")
+        # E-mail com conta em OUTRO cliente pode ser convidado: ao aceitar, este
+        # cliente se soma aos dela, com a mesma senha. Só não faz sentido
+        # convidar quem já entra neste.
+        taken = db.execute("SELECT id, role FROM users WHERE email = ?", (email,)).fetchone()
+        if taken and taken["role"] == "superadmin":
+            raise ValueError("Este e-mail é da conta da agência.")
+        if taken and db.execute(
+            "SELECT 1 FROM tenant_members WHERE user_id = ? AND tenant_id = ?", (taken["id"], tenant_id)
+        ).fetchone():
+            raise ValueError("Esta pessoa já tem acesso a este cliente.")
 
         token = secrets.token_urlsafe(32)
         expires = datetime.now(UTC) + timedelta(days=INVITE_TTL_DAYS)
-        # Um convite pendente por e-mail: reenviar substitui o anterior.
+        # Um convite pendente por e-mail e cliente: reenviar substitui o anterior.
         db.execute(
-            "DELETE FROM user_invites WHERE email = ? AND accepted_at IS NULL", (email,)
+            "DELETE FROM user_invites WHERE email = ? AND tenant_id = ? AND accepted_at IS NULL",
+            (email, tenant_id),
         )
         db.execute(
             "INSERT INTO user_invites "
@@ -1075,6 +1275,9 @@ def get_invite(token: str | None) -> dict | None:
     if not row:
         return None
     invite = dict(row)
+    # Quem já tem conta aceita com a senha que já usa (o convite soma um
+    # cliente); quem não tem cria a senha agora.
+    invite["has_account"] = _user_by_email(invite["email"]) is not None
     if invite["accepted_at"]:
         return {**invite, "state": "accepted"}
     if invite["expires_at"] < _now():
@@ -1085,7 +1288,16 @@ def get_invite(token: str | None) -> dict | None:
 
 
 def accept_invite(token: str | None, *, password: str | None, name: str | None = None) -> dict:
-    """Converte o convite em acesso real. Idempotente por token."""
+    """
+    Converte o convite em acesso real. Idempotente por token.
+
+    Duas situações:
+
+    * **E-mail sem conta** — cria a pessoa com a senha escolhida agora.
+    * **E-mail que já tem conta** (em outro cliente) — confere a senha ATUAL
+      dela e soma este cliente aos que ela já acessa. Sem essa conferência,
+      quem recebesse o link de outra pessoa ganharia acesso à conta dela.
+    """
     invite = get_invite(token)
     if not invite:
         raise ValueError("Convite não encontrado.")
@@ -1095,29 +1307,27 @@ def accept_invite(token: str | None, *, password: str | None, name: str | None =
         raise ValueError("Este convite expirou. Peça um novo ao administrador.")
     if invite["state"] == "inactive":
         raise ValueError("O acesso deste cliente está suspenso.")
-    if len(password or "") < 8:
-        raise ValueError("A senha precisa ter pelo menos 8 caracteres.")
 
-    final_name = (name or "").strip() or invite["name"]
+    with connection() as db:
+        existing = db.execute(
+            "SELECT id, role, password_hash FROM users WHERE email = ?", (invite["email"],)
+        ).fetchone()
+        if existing:
+            if existing["role"] == "superadmin":
+                raise ValueError("Este e-mail é da conta da agência.")
+            if not check_password_hash(existing["password_hash"], password or ""):
+                raise ValueError("Senha incorreta. Use a senha com que você já entra no painel.")
+            user_id = existing["id"]
+        else:
+            if len(password or "") < 8:
+                raise ValueError("A senha precisa ter pelo menos 8 caracteres.")
+            final_name = (name or "").strip() or invite["name"]
+            user_id = _insert_user(db, final_name, invite["email"], password)
+        _add_membership(db, user_id, invite["tenant_id"], invite["role"])
+        db.execute("UPDATE users SET last_tenant_id = ? WHERE id = ?", (invite["tenant_id"], user_id))
+        db.execute("UPDATE user_invites SET accepted_at = ? WHERE token = ?", (_now(), token))
 
-    try:
-        with connection() as db:
-            cursor = db.execute(
-                "INSERT INTO users (tenant_id, name, email, password_hash, role, created_at) "
-                "VALUES (?, ?, ?, ?, ?, ?)" + (" RETURNING id" if db.postgres else ""),
-                (
-                    invite["tenant_id"], final_name, invite["email"],
-                    generate_password_hash(password), invite["role"], _now(),
-                ),
-            )
-            user_id = cursor.fetchone()["id"] if db.postgres else cursor.lastrowid
-            db.execute(
-                "UPDATE user_invites SET accepted_at = ? WHERE token = ?", (_now(), token)
-            )
-    except (sqlite3.IntegrityError, psycopg.IntegrityError) as exc:
-        raise ValueError("Este e-mail já possui uma conta.") from exc
-
-    return get_user(user_id)
+    return get_user(user_id, invite["tenant_id"])
 
 
 def list_pending_invites(tenant_id: int | None) -> list[dict]:
