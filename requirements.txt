@@ -5,5 +5,7 @@ dash-daq==0.6.0
 python-dotenv>=1.1,<2.0
 psycopg[binary]==3.2.13
 requests>=2.32,<3.0
+# QR code do cadastro do MFA (puro Python, sem dependência nativa).
+segno==1.6.6
 # Servidor de produção (Linux/Docker). Localmente, `python app.py` basta.
 gunicorn==22.0.0

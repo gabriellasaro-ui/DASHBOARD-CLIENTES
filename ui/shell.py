@@ -30,9 +30,13 @@ NAV_MAIN = [
 
 NAV_WORK = []
 
-# Conta: só para quem pode mudar a aparência da empresa (responsável e
-# master). O visualizador não vê o item — a tela existe, mas só diria "não".
-NAV_ACCOUNT = [("/aparencia", "Aparência", "palette")]
+# Conta: layout (telas de TV), aparência e segurança (MFA). Aparência só
+# aparece para quem pode mudá-la (ver `sidebar`).
+NAV_ACCOUNT = [
+    ("/layout", "Layout", "layout-dashboard"),
+    ("/aparencia", "Aparência", "palette"),
+    ("/seguranca", "Segurança", "shield-check"),
+]
 
 ALL_NAV = NAV_MAIN + NAV_WORK + NAV_ACCOUNT
 PAGE_TITLES = {path: label for path, label, _ in ALL_NAV}
@@ -78,7 +82,12 @@ def sidebar(pathname: str = "/", user: dict | None = None, brand: dict | None = 
     }
     navigation = list(NAV_MAIN)
     work_navigation = list(NAV_WORK)
-    account_navigation = list(NAV_ACCOUNT) if user.get("role") in ("client_admin", "superadmin") else []
+    # Layout (links das TVs) e Segurança (MFA) são de todos; Aparência só de
+    # quem pode mudá-la.
+    account_navigation = [
+        item for item in NAV_ACCOUNT
+        if item[0] != "/aparencia" or user.get("role") in ("client_admin", "superadmin")
+    ]
     if user.get("role") == "superadmin":
         navigation = [("/admin", "Clientes", "building-2"), *NAV_MAIN]
 
@@ -372,11 +381,21 @@ def topbar(
                     html.Div(
                         [
                             html.Button(
-                                [icon("building-2", 18), icon("chevron-down", 16, className="trigger__chevron")],
+                                [
+                                    icon("building-2", 18),
+                                    # O nome do cliente aberto, à vista: só o ícone
+                                    # não dizia que dava para trocar de cliente aqui.
+                                    html.Span(
+                                        next((acc["nome"] for acc in accounts if acc["id"] == active_id),
+                                             "Escolher cliente"),
+                                        className="account-trigger__name",
+                                    ),
+                                    icon("chevron-down", 16, className="trigger__chevron"),
+                                ],
                                 id="account-trigger",
                                 n_clicks=0,
                                 className="btn btn--outline",
-                                style={"padding": "0 10px", "gap": "4px"},
+                                style={"padding": "0 10px", "gap": "6px"},
                                 **{"aria-label": "Trocar de conta", "title": "Trocar de conta"},
                             ),
                             html.Div(id="account-scrim", n_clicks=0, className="scrim hide"),

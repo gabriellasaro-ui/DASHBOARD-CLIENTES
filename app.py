@@ -118,6 +118,10 @@ server.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
     PERMANENT_SESSION_LIFETIME=__import__("datetime").timedelta(days=30),
+    # O painel dispara várias requisições em paralelo. Renovando o cookie em
+    # toda resposta, a que saiu ANTES de uma troca de cliente e voltou depois
+    # regravava o cliente antigo. O cookie só é reenviado quando muda.
+    SESSION_REFRESH_EACH_REQUEST=False,
     # Só com HTTPS na frente: com o cookie marcado como seguro, um acesso por
     # http://ip:7000 nunca manteria a sessão.
     SESSION_COOKIE_SECURE=os.getenv("PULSE_COOKIE_SECURE", "false").lower() == "true",
@@ -159,7 +163,11 @@ def _protect_pages():
                 clear_cache()
             return redirect("/")
 
-    protected = {"/", "/meta-ads", "/google-ads", "/campanhas", "/admin", "/aparencia"}
+    # Tela de TV: exige login; quem pode ver qual tela, a própria página decide.
+    if pathname.startswith("/tv/"):
+        return None if current_user() else redirect(f"/login?next={pathname}")
+
+    protected = {"/", "/meta-ads", "/google-ads", "/campanhas", "/admin", "/aparencia", "/layout", "/seguranca"}
     if pathname not in protected:
         return None
     user = current_user()
@@ -488,12 +496,14 @@ def _sync_navigation(pathname, nav_ids):
     # Telas de entrada não têm menu nem topo — inclusive o convite, que é
     # aberto por quem ainda não tem conta.
     is_auth = pathname in {"/login", "/registro", "/convite"}
+    # TV: tela cheia, sem menu nem topo.
+    is_tv = pathname.startswith("/tv/")
     is_admin_page = pathname == "/admin"
 
     brand = brand_for_request(pathname)
 
     return (
-        classes("shell", "shell--auth" if is_auth else None),
+        classes("shell", "shell--auth" if is_auth else None, "shell--tv" if is_tv else None),
         [shell.nav_class(item["href"], pathname) for item in nav_ids],
         "Clientes" if is_admin_page else shell.PAGE_TITLES.get(pathname, "Dashboard"),
         # O seletor de métricas governa a faixa de KPIs do dashboard;
@@ -640,7 +650,11 @@ def _account_control(_t, _s, _opts, menu_class, active_id, pathname):
         open_menu = False
         # Escolher um cliente a partir da lista de clientes abre o painel
         # dele; em qualquer outra tela, continua na mesma tela.
-        redirect_href = "/" if (pathname or "/") == "/admin" else (pathname or "/")
+        base = "/" if (pathname or "/") == "/admin" else (pathname or "/")
+        # O cliente vai no endereço para ele MUDAR a cada troca: o redirect só
+        # recarrega quando o href muda, e trocar duas vezes na mesma tela
+        # (ambas para "/") deixava os números do cliente anterior na tela.
+        redirect_href = f"{base}?cliente={active_id}"
 
     user = current_user()
     tenant = active_tenant(user)

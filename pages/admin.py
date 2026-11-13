@@ -39,6 +39,8 @@ from core.storage import (
     set_user_password,
     tenant_stats,
     update_tenant_settings,
+    disable_mfa,
+    set_mfa_required,
 )
 from ui.icons import icon
 from ui.primitives import (
@@ -46,6 +48,7 @@ from ui.primitives import (
     card,
     card_body,
     card_header,
+    classes,
     color_input,
     field,
     form_section,
@@ -505,6 +508,9 @@ def _access_rows(users: list[dict]):
                                     badge(ROLE_LABELS.get(user["role"], user["role"]),
                                           "brand" if user["role"] == "client_admin" else "neutral"),
                                     None if active else badge("Desativado", "warning", dot=True),
+                                    badge("2FA", "positive", dot=True) if user.get("mfa_enabled") else (
+                                        badge("2FA exigido", "warning") if user.get("mfa_required") else None
+                                    ),
                                 ],
                                 className="row gap-2",
                             ),
@@ -529,6 +535,25 @@ def _access_rows(users: list[dict]):
                                 className="btn btn--outline btn--sm",
                                 title=f"Ver o painel como {user['name']}",
                             ) if active else None,
+                            # Exigir: no próximo login a pessoa cadastra o
+                            # app autenticador antes de entrar.
+                            html.Button(
+                                icon("shield-check", 16),
+                                id={"type": "admin-mfa-require", "id": user["id"]},
+                                n_clicks=0,
+                                className=classes("btn btn--ghost btn--icon btn--sm",
+                                                  "btn--active" if user.get("mfa_required") else None),
+                                title="Deixar de exigir 2FA" if user.get("mfa_required") else
+                                "Exigir verificação em duas etapas",
+                            ),
+                            dcc.ConfirmDialogProvider(
+                                html.Button("Resetar 2FA", className="btn btn--ghost btn--sm",
+                                            title="Celular perdido: apaga o cadastro do app"),
+                                id={"type": "admin-mfa-reset", "id": user["id"]},
+                                message=(f"Resetar a verificação em duas etapas de {user['name']}?\n\n"
+                                         "O app autenticador cadastrado deixa de valer. Se o 2FA for exigido, "
+                                         "a pessoa cadastra um novo no próximo login."),
+                            ) if user.get("mfa_enabled") else None,
                             html.Button(
                                 icon("power", 16),
                                 id={"type": "admin-user-toggle", "id": user["id"]},
@@ -1074,6 +1099,8 @@ def _load_access(view, _tick):
     Input({"type": "admin-user-toggle", "id": ALL}, "n_clicks"),
     Input({"type": "admin-invite-revoke", "token": ALL}, "n_clicks"),
     Input({"type": "admin-user-delete", "id": ALL}, "submit_n_clicks"),
+    Input({"type": "admin-mfa-require", "id": ALL}, "n_clicks"),
+    Input({"type": "admin-mfa-reset", "id": ALL}, "submit_n_clicks"),
     State("admin-view", "data"),
     State("admin-invite-name", "value"),
     State("admin-invite-email", "value"),
@@ -1084,7 +1111,7 @@ def _load_access(view, _tick):
     prevent_initial_call=True,
 )
 def _access_action(
-    _invite, _reset, toggles, revokes, deletes, view,
+    _invite, _reset, toggles, revokes, deletes, mfa_requires, mfa_resets, view,
     invite_name, invite_email, invite_role, reset_user, reset_password, tick,
 ):
     """Todas as ações de acesso num lugar só, para o feedback ser um só."""
@@ -1095,8 +1122,10 @@ def _access_action(
     trigger = ctx.triggered_id
     kind = trigger.get("type") if isinstance(trigger, dict) else trigger
 
-    if kind in ("admin-user-toggle", "admin-invite-revoke", "admin-user-delete") and not _real_click(
+    if kind in ("admin-user-toggle", "admin-invite-revoke", "admin-user-delete",
+                "admin-mfa-require", "admin-mfa-reset") and not _real_click(
         list(toggles or []) + list(revokes or []) + list(deletes or [])
+        + list(mfa_requires or []) + list(mfa_resets or [])
     ):
         return dash.no_update, dash.no_update, dash.no_update
 
@@ -1132,6 +1161,19 @@ def _access_action(
             removed = delete_user(trigger["id"], tenant_id=int(tenant_id))
             message = (f"Acesso de {removed['name']} excluído." if removed["account_deleted"]
                        else f"{removed['name']} não acessa mais este cliente; os outros clientes dela seguem iguais.")
+
+        elif kind in ("admin-mfa-require", "admin-mfa-reset"):
+            users = {user["id"]: user for user in list_tenant_users(int(tenant_id))}
+            target = users.get(trigger["id"])
+            if not target:
+                raise ValueError("Acesso não encontrado.")
+            if kind == "admin-mfa-require":
+                set_mfa_required(target["id"], not target.get("mfa_required"))
+                message = (f"2FA exigido para {target['name']}: o cadastro acontece no próximo login."
+                           if not target.get("mfa_required") else f"2FA deixou de ser exigido para {target['name']}.")
+            else:
+                disable_mfa(target["id"])
+                message = f"2FA de {target['name']} resetado."
 
         elif kind == "admin-invite-revoke":
             revoke_invite(trigger["token"])

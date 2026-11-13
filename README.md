@@ -274,6 +274,28 @@ gráficos são corrigidas contra a cor dos cards. Texto com contraste abaixo de
 4,5:1 sobre o fundo ou os cards não é salvo. O tema fica em
 `tenants.theme_data` (JSON).
 
+## Telas de TV e escolha de blocos
+
+Em **Layout** (menu Conta):
+
+- **Painel** — quais blocos o dashboard do cliente mostra.
+- **Telas de TV** — quantas telas quiser por cliente, cada uma com nome,
+  período, até 8 indicadores e até 8 gráficos. Cada tela tem um endereço fixo
+  `/tv/<código>`: abra na TV, entre com um acesso do cliente e deixe aberto.
+
+A TV usa o cliente **do endereço**, não o da sessão: várias TVs com o mesmo
+login mostram cada uma a sua tela, e atualizar a página volta para ela. A tela
+ocupa a TV inteira sem rolagem, divide o espaço entre os blocos escolhidos e
+aumenta letra e gráficos conforme a largura (HD a 4K). Atualiza sozinha a cada
+5 minutos.
+
+## Verificação em duas etapas (MFA)
+
+Código de 6 dígitos de app autenticador (TOTP). Cada pessoa ativa a própria em
+**Segurança**. No admin, cada acesso pode ser marcado para **exigir 2FA** (o
+cadastro acontece no próximo login, com QR code na tela de entrada) e o 2FA
+pode ser **resetado** quando a pessoa perde o celular.
+
 ## Autenticação e tenants
 
 - Senhas são armazenadas somente como hash pelo Werkzeug.

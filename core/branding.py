@@ -402,6 +402,35 @@ def brand_for_tenant(tenant: dict | None) -> dict:
     }
 
 
+def tv_tenant(pathname: str | None = None) -> dict | None:
+    """
+    Cliente da tela de TV aberta (`/tv/<código>`), ou None fora de uma.
+
+    A TV mostra o cliente DA TELA, não o da sessão: a mesma pessoa logada em
+    várias TVs vê um cliente em cada. Marca e cores dos gráficos precisam
+    seguir esse cliente, inclusive nas requisições internas do Dash (onde a
+    tela vem no Referer).
+    """
+    from urllib.parse import urlparse
+
+    from flask import has_request_context, request
+
+    if pathname is None:
+        if not has_request_context():
+            return None
+        pathname = request.path
+        if pathname.startswith("/_dash") and request.referrer:
+            pathname = urlparse(request.referrer).path
+    parts = (pathname or "").strip("/").split("/")
+    if len(parts) != 2 or parts[0] != "tv":
+        return None
+    from core.storage import get_tenant, get_tv_screen
+
+    screen = get_tv_screen(parts[1])
+    tenant = get_tenant(screen["tenant_id"]) if screen else None
+    return tenant if tenant and tenant.get("status") == "active" else None
+
+
 def _screen_args() -> dict:
     """
     Parâmetros da URL da TELA (`?next=`, `?token=`), não da requisição.
@@ -452,6 +481,10 @@ def brand_for_request(pathname: str | None = None) -> dict:
         if pathname is None:
             pathname = request.path
         pathname = (pathname or "/").split("?")[0].rstrip("/") or "/"
+
+        screen_tenant = tv_tenant(pathname)
+        if screen_tenant:
+            return brand_for_tenant(screen_tenant)
 
         user = current_user()
         if user:

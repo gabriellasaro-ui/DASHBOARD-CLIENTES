@@ -296,6 +296,7 @@ def init_db() -> None:
             )
 
         _migrate_memberships(db)
+        _migrate_layouts_and_mfa(db)
 
 
 def _migrate_memberships(db) -> None:
@@ -341,6 +342,42 @@ def _migrate_memberships(db) -> None:
         "UPDATE users SET last_tenant_id = COALESCE(last_tenant_id, tenant_id), tenant_id = NULL "
         "WHERE tenant_id IS NOT NULL AND role IN ('client_admin', 'client')"
     )
+
+
+def _add_column(db, table: str, column: str, ddl: str) -> None:
+    if db.postgres:
+        db.execute(f"ALTER TABLE {table} ADD COLUMN IF NOT EXISTS {column} {ddl}")
+    elif column not in {row["name"] for row in db.execute(f"PRAGMA table_info({table})")}:
+        db.execute(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}")
+
+
+def _migrate_layouts_and_mfa(db) -> None:
+    """
+    Layout do painel por cliente, telas de TV e verificação em duas etapas.
+
+    A tela de TV tem id aleatório (não sequencial): ele vai na URL que fica
+    aberta na TV, e um id adivinhável deixaria alguém trocar o número na barra
+    e ver a tela de outro cliente — a sessão ainda barra, mas não precisa
+    facilitar.
+    """
+    _add_column(db, "tenants", "layout_data", "TEXT")
+    db.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS tv_screens (
+            id TEXT PRIMARY KEY,
+            tenant_id BIGINT NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+            name TEXT NOT NULL,
+            config TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_tv_screens_tenant ON tv_screens(tenant_id);
+        """
+    )
+    _add_column(db, "users", "mfa_secret", "TEXT")
+    _add_column(db, "users", "mfa_enabled", "SMALLINT NOT NULL DEFAULT 0")
+    _add_column(db, "users", "mfa_required", "SMALLINT NOT NULL DEFAULT 0")
+    _add_column(db, "users", "mfa_last_step", "BIGINT")
 
 
 def _clean_color(value: str | None, fallback: str) -> str:
@@ -1010,6 +1047,8 @@ def list_tenant_users(tenant_id: int | None) -> list[dict]:
             """
             SELECT u.id, m.tenant_id, u.name, u.email, m.role,
                    CASE WHEN m.active = 1 AND u.active = 1 THEN 1 ELSE 0 END AS active,
+                   CASE WHEN u.mfa_enabled = 1 AND u.mfa_secret IS NOT NULL THEN 1 ELSE 0 END AS mfa_enabled,
+                   u.mfa_required,
                    m.created_at,
                    (SELECT COUNT(*) FROM tenant_members o
                     WHERE o.user_id = u.id AND o.tenant_id != m.tenant_id) AS other_tenants
@@ -1165,7 +1204,8 @@ def delete_tenant(tenant_id: int) -> dict:
         members = [row["user_id"] for row in db.execute(
             "SELECT user_id FROM tenant_members WHERE tenant_id = ?", (tenant_id,)
         ).fetchall()]
-        for table in ("media_daily_metrics", "media_sync_state", "media_sync_windows", "media_period_reach"):
+        for table in ("media_daily_metrics", "media_sync_state", "media_sync_windows", "media_period_reach",
+                      "tv_screens"):
             db.execute(f"DELETE FROM {table} WHERE tenant_id = ?", (tenant_id,))
         db.execute("DELETE FROM user_invites WHERE tenant_id = ?", (tenant_id,))
         db.execute("DELETE FROM tenant_members WHERE tenant_id = ?", (tenant_id,))
@@ -1346,3 +1386,118 @@ def list_pending_invites(tenant_id: int | None) -> list[dict]:
 def revoke_invite(token: str | None) -> None:
     with connection() as db:
         db.execute("DELETE FROM user_invites WHERE token = ? AND accepted_at IS NULL", (token,))
+
+
+# --------------------------------------------------------------------------
+# Layout do painel e telas de TV
+# --------------------------------------------------------------------------
+
+def set_dashboard_layout(tenant_id: int, config: dict) -> dict:
+    from core import layouts
+
+    clean = layouts.clean_dashboard(config)
+    with connection() as db:
+        db.execute("UPDATE tenants SET layout_data = ? WHERE id = ?", (layouts.dumps(clean), tenant_id))
+    return clean
+
+
+def list_tv_screens(tenant_id: int | None) -> list[dict]:
+    if not tenant_id:
+        return []
+    with connection() as db:
+        rows = db.execute(
+            "SELECT id, tenant_id, name, config, created_at FROM tv_screens WHERE tenant_id = ? ORDER BY created_at",
+            (tenant_id,),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def get_tv_screen(screen_id: str | None) -> dict | None:
+    if not screen_id:
+        return None
+    with connection() as db:
+        row = db.execute(
+            "SELECT id, tenant_id, name, config, created_at FROM tv_screens WHERE id = ?", (screen_id,)
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def save_tv_screen(tenant_id: int, *, name: str | None, config: dict, screen_id: str | None = None) -> dict:
+    """Cria (sem `screen_id`) ou altera uma tela de TV do cliente."""
+    import secrets
+
+    from core import layouts
+
+    name = (name or "").strip()
+    if len(name) < 2:
+        raise ValueError("Dê um nome à tela (ex.: TV da recepção).")
+    clean = layouts.dumps(layouts.clean_tv(config))
+    with connection() as db:
+        if screen_id:
+            found = db.execute(
+                "SELECT id FROM tv_screens WHERE id = ? AND tenant_id = ?", (screen_id, tenant_id)
+            ).fetchone()
+            if not found:
+                raise ValueError("Tela não encontrada.")
+            db.execute("UPDATE tv_screens SET name = ?, config = ? WHERE id = ?", (name, clean, screen_id))
+        else:
+            screen_id = secrets.token_urlsafe(9)
+            db.execute(
+                "INSERT INTO tv_screens (id, tenant_id, name, config, created_at) VALUES (?, ?, ?, ?, ?)",
+                (screen_id, tenant_id, name, clean, _now()),
+            )
+    return get_tv_screen(screen_id)
+
+
+def delete_tv_screen(screen_id: str, tenant_id: int) -> None:
+    with connection() as db:
+        db.execute("DELETE FROM tv_screens WHERE id = ? AND tenant_id = ?", (screen_id, tenant_id))
+
+
+# --------------------------------------------------------------------------
+# Verificação em duas etapas (TOTP)
+# --------------------------------------------------------------------------
+
+def get_mfa(user_id: int | None) -> dict:
+    """Estado do MFA de uma pessoa: segredo, se está ativo e se é exigido."""
+    if not user_id:
+        return {"secret": None, "enabled": False, "required": False, "last_step": None}
+    with connection() as db:
+        row = db.execute(
+            "SELECT mfa_secret, mfa_enabled, mfa_required, mfa_last_step FROM users WHERE id = ?", (user_id,)
+        ).fetchone()
+    if not row:
+        return {"secret": None, "enabled": False, "required": False, "last_step": None}
+    return {
+        "secret": row["mfa_secret"],
+        "enabled": bool(row["mfa_enabled"]) and bool(row["mfa_secret"]),
+        "required": bool(row["mfa_required"]),
+        "last_step": row["mfa_last_step"],
+    }
+
+
+def enable_mfa(user_id: int, secret: str) -> None:
+    with connection() as db:
+        db.execute(
+            "UPDATE users SET mfa_secret = ?, mfa_enabled = 1, mfa_last_step = NULL WHERE id = ?",
+            (secret, user_id),
+        )
+
+
+def disable_mfa(user_id: int) -> None:
+    """Desliga e apaga o segredo (celular perdido: o admin reseta e a pessoa cadastra de novo)."""
+    with connection() as db:
+        db.execute(
+            "UPDATE users SET mfa_secret = NULL, mfa_enabled = 0, mfa_last_step = NULL WHERE id = ?", (user_id,)
+        )
+
+
+def set_mfa_required(user_id: int, required: bool) -> None:
+    with connection() as db:
+        db.execute("UPDATE users SET mfa_required = ? WHERE id = ?", (1 if required else 0, user_id))
+
+
+def mark_mfa_step(user_id: int, step: int) -> None:
+    """Último código aceito: o mesmo código não entra duas vezes (replay)."""
+    with connection() as db:
+        db.execute("UPDATE users SET mfa_last_step = ? WHERE id = ?", (step, user_id))

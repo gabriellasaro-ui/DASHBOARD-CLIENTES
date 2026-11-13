@@ -1472,3 +1472,382 @@
 .appearance-locked > .icon { flex: none; margin-top: 2px; color: var(--ink-muted); }
 .appearance-locked strong { display: block; margin-bottom: 3px; color: var(--ink); font-weight: 600; }
 .appearance-locked span { line-height: 1.55; }
+
+/* --------------------------------------------------------------------------
+   BLOCOS ESCOLHIDOS (ui/widgets.py)
+   -------------------------------------------------------------------------- */
+/* Tirar um bloco não pode deixar buraco no meio da grade. */
+.grid--dense { grid-auto-flow: row dense; }
+
+.channels { display: flex; flex-direction: column; min-height: 0; }
+.donut-slot { position: relative; min-height: 0; }
+.channel-legend { padding: 0 20px 4px; }
+.channel-legend__item { width: 100%; padding: 5px 0; }
+
+.top-campaigns { display: flex; flex-direction: column; gap: 12px; padding: 4px 20px 20px; }
+.top-campaigns__empty { padding: 4px 20px 20px; }
+.top-campaigns__row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 10px; }
+.top-campaigns__row > :first-child { margin-top: 2px; }
+.top-campaigns__main { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.top-campaigns__line { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.top-campaigns__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.top-campaigns__value { flex: none; font-size: 13px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.top-campaigns__bar { flex: 1; height: 4px; overflow: hidden; border-radius: 2px; background: var(--line-soft); }
+.top-campaigns__bar > span { display: block; height: 100%; border-radius: 2px; background: var(--brand-data); }
+.top-campaigns__meta { flex: none; font-size: 11px; color: var(--ink-muted); white-space: nowrap; }
+
+/* --------------------------------------------------------------------------
+   TELA DE TV (pages/tv.py)
+   Tela cheia, sem rolagem. Tudo em `em` sobre uma fonte base que acompanha
+   a LARGURA da TV (vw): o mesmo layout serve numa TV HD e numa 4K sem cortar
+   texto. Os gráficos crescem pelo `--chart-scale` (lido pelo 50-charts.js).
+   -------------------------------------------------------------------------- */
+.shell--tv .sidebar,
+.shell--tv .topbar { display: none; }
+.shell--tv .shell__content { padding: 0; max-width: none; }
+
+.tv-page { height: 100vh; overflow: hidden; }
+
+.tv {
+  --chart-scale: 1.25;
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+  height: 100vh;
+  padding: 1.3vw 1.5vw;
+  overflow: hidden;
+  background: var(--plane);
+  color: var(--ink);
+  font-size: clamp(12px, 0.9vw, 46px);
+}
+
+@media (min-width: 1700px) { .tv { --chart-scale: 1.6; } }
+@media (min-width: 2500px) { .tv { --chart-scale: 2.3; } }
+@media (min-width: 3400px) { .tv { --chart-scale: 3.1; } }
+
+.tv__head { display: flex; align-items: center; gap: 1.2em; flex: none; min-width: 0; }
+.tv__brand .auth-brand__logo { max-width: 9em; max-height: 2.8em; }
+.tv__brand .auth-brand__initial { width: 2.4em; height: 2.4em; font-size: 1.2em; }
+.tv__brand .auth-brand__name { display: none; }
+.tv__heading { min-width: 0; }
+.tv__title { font-family: var(--font-heading); font-size: 1.8em; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+.tv__subtitle { display: block; margin-top: 0.15em; font-size: 0.95em; color: var(--ink-muted); }
+.tv__updated { display: inline-flex; align-items: center; gap: 0.45em; margin-left: auto; font-size: 0.85em; color: var(--ink-faint); white-space: nowrap; }
+
+.tv__kpis {
+  display: grid;
+  grid-template-columns: repeat(var(--tv-kpis), minmax(0, 1fr));
+  gap: 1vw;
+  flex: none;
+}
+
+.tv-kpi {
+  /* O número se mede pela largura do PRÓPRIO card (container query): com
+     8 cards numa TV, uma fonte fixa cortava "R$ 244,60" em "R$ 244,…". */
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  min-width: 0;
+  padding: 0.9em 1.1em;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.tv-kpi__label { overflow: hidden; font-size: 0.95em; color: var(--ink-secondary); text-overflow: ellipsis; white-space: nowrap; }
+.tv-kpi__value {
+  overflow: hidden;
+  font-family: var(--font-heading);
+  /* Reserva para navegador de TV sem container query; o clamp abaixo vence onde houver. */
+  font-size: 1.7em;
+  font-size: clamp(1.1em, 13.5cqi, 2.6em);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tv-kpi__delta { display: inline-flex; align-items: center; gap: 0.3em; font-size: 0.82em; font-weight: 600; white-space: nowrap; overflow: hidden; }
+
+.tv__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--tv-cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--tv-rows), minmax(0, 1fr));
+  gap: 1vw;
+  flex: 1;
+  min-height: 0;
+}
+
+.tv-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 1em 1.2em;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.tv-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1em; flex: none; margin-bottom: 0.6em; }
+.tv-card__title { font-family: var(--font-heading); font-size: 1.15em; font-weight: 600; line-height: 1.2; }
+.tv-card__subtitle { display: block; margin-top: 0.1em; font-size: 0.8em; color: var(--ink-muted); }
+.tv-card__body { position: relative; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.tv-card__body > .chart-wrap { flex: 1; min-height: 0; padding: 0; }
+
+.tv .legend { gap: 1em; }
+.tv .legend__item { gap: 0.45em; font-size: 0.85em; }
+.tv .legend__swatch { width: 0.7em; height: 0.7em; }
+.tv .legend__swatch--line { width: 1.1em; height: 0.18em; }
+
+/* Rosca + legenda lado a lado: o card da TV é mais largo que alto. */
+.tv .channels { flex: 1; flex-direction: row; align-items: center; gap: 1em; }
+.tv .donut-slot { flex: 1 1 55%; height: 100%; }
+.tv .donut-slot > .chart-wrap { height: 100% !important; padding: 0; }
+.tv .channel-legend { flex: 1 1 45%; padding: 0; }
+.tv .channel-legend__item { padding: 0.35em 0; font-size: 0.9em; }
+
+.tv .funnel { flex: 1; justify-content: space-around; gap: 0.2em; padding: 0; }
+.tv .funnel__stage { gap: 0.35em; }
+.tv .funnel__name { font-size: 0.9em; }
+.tv .funnel__value { font-size: 1.05em; }
+.tv .funnel__bar { height: 2.2em; border-radius: 0.4em; }
+.tv .funnel__step { font-size: 0.8em; }
+
+.tv .top-campaigns { flex: 1; min-height: 0; overflow: hidden; justify-content: space-evenly; gap: 0.5em; padding: 0; }
+.tv .top-campaigns__row { gap: 0.7em; }
+.tv .top-campaigns__main { gap: 0.3em; }
+.tv .top-campaigns__name { font-size: 0.95em; }
+.tv .top-campaigns__value { font-size: 1em; }
+.tv .top-campaigns__bar { height: 0.35em; }
+.tv .top-campaigns__meta { font-size: 0.78em; }
+
+.tv-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  height: 100%;
+  text-align: center;
+  color: var(--ink-muted);
+}
+.tv-notice h1 { font-size: 1.8em; color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   VERIFICAÇÃO EM DUAS ETAPAS
+   -------------------------------------------------------------------------- */
+.mfa-setup { margin-bottom: 18px; text-align: center; }
+.mfa-qr {
+  display: block;
+  width: 196px;
+  height: 196px;
+  margin: 14px auto 10px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  /* QR sempre em fundo branco: leitor de câmera falha em QR invertido. */
+  background: #ffffff;
+}
+.mfa-key { font-size: 12px; color: var(--ink-muted); }
+.mfa-key code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  word-break: break-all;
+}
+
+/* --------------------------------------------------------------------------
+   LAYOUT (pages/layout.py) e SEGURANÇA (pages/seguranca.py)
+   -------------------------------------------------------------------------- */
+.layout-page__cards { display: flex; flex-direction: column; gap: 18px; max-width: 980px; }
+
+.widget-pick {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px 18px;
+}
+
+.tv-list { display: flex; flex-direction: column; }
+.tv-list__empty { padding: 4px 20px 16px; }
+
+.tv-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.tv-list__info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tv-list__name { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); }
+.tv-list__name .icon { color: var(--ink-muted); }
+.tv-list__link { display: flex; align-items: center; gap: 6px; min-width: 0; }
+
+.tv-list__url {
+  overflow: hidden;
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  background: var(--surface-sunken);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: var(--ink-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tv-list__copy { flex: none; color: var(--ink-muted); cursor: pointer; }
+.tv-list__copy:hover { color: var(--brand); }
+.tv-list__actions { display: flex; align-items: center; gap: 6px; flex: none; }
+.tv-form__mode { margin-bottom: 12px; font-weight: 600; color: var(--ink-secondary); }
+
+.security-card { max-width: 640px; }
+.security__status { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 18px; }
+.security__text { line-height: 1.55; }
+.mfa-setup--left { margin: 16px 0 6px; text-align: left; }
+.mfa-setup--left .mfa-qr { margin: 10px 0; }
+
+/* Botão de ícone "ligado" (ex.: 2FA exigido no admin). */
+.btn--active { color: var(--brand); background: var(--brand-tint); }
+
+@media (max-width: 720px) {
+  .tv-list__row { flex-direction: column; align-items: stretch; }
+  .tv-list__actions { justify-content: flex-end; }
+}
+.widget-pick .checkbox { padding: 7px 8px; border-radius: var(--r-sm); }
+.widget-pick .checkbox:hover { background: var(--wash-1); }
+
+/* Nome do cliente aberto no botão de troca de cliente (topo). */
+.account-trigger__name {
+  max-width: 180px;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) { .account-trigger__name { display: none; } }
+
+/* Cadastro do 2FA: passos e a chave manual escondida atrás de "Não consegue
+   ler o QR code?". */
+.mfa-steps { margin: 0 0 4px; padding-left: 18px; text-align: left; font-size: 12px; line-height: 1.6; color: var(--ink-secondary); }
+.mfa-steps li + li { margin-top: 6px; }
+.mfa-steps strong { color: var(--ink); }
+.mfa-manual { margin-top: 4px; text-align: left; font-size: 12px; color: var(--ink-muted); }
+.mfa-manual summary { cursor: pointer; color: var(--brand); font-weight: 500; }
+.mfa-manual .mfa-key { margin-top: 8px; }
+.mfa-key__code {
+  display: block;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  background: var(--surface-sunken);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  word-break: break-all;
+}
+
+/* --------------------------------------------------------------------------
+   CRIATIVO CAMPEÃO (ui/widgets.py)
+   Imagem à esquerda, números à direita. A imagem é fundo de CSS sobre um
+   marcador: link vencido da Meta mostra o marcador, não imagem quebrada.
+   -------------------------------------------------------------------------- */
+.champion { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 18px; padding: 4px 20px 20px; }
+.champion__empty { padding: 4px 20px 20px; }
+
+.champion__media-wrap { position: relative; min-height: 0; }
+.champion__media,
+.champion__thumb {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--surface-sunken);
+}
+.champion__media { height: 240px; }
+.champion__placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-faint); }
+.champion__picture { position: absolute; inset: 0; background-position: center; background-repeat: no-repeat; background-size: contain; }
+
+.champion__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--r-pill);
+  background: var(--brand);
+  color: var(--brand-contrast);
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: var(--shadow-card);
+}
+
+.champion__info { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.champion__context { overflow: hidden; font-size: 11px; color: var(--ink-muted); text-overflow: ellipsis; white-space: nowrap; }
+.champion__name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.champion__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.champion__stat { display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; border-radius: var(--r-sm); background: var(--surface-sunken); }
+.champion__stat span { font-size: 10px; color: var(--ink-muted); }
+.champion__stat strong { overflow: hidden; font-size: 15px; color: var(--ink); text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.champion__runners { display: flex; flex-direction: column; gap: 6px; margin-top: auto; }
+.champion__runners-title { font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); }
+.champion__runner { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.champion__thumb { flex: none; width: 36px; height: 36px; border-radius: var(--r-sm); }
+.champion__runner-text { display: flex; flex-direction: column; min-width: 0; }
+.champion__runner-name { overflow: hidden; font-size: 11px; font-weight: 500; color: var(--ink); text-overflow: ellipsis; white-space: nowrap; }
+.champion__runner-meta { font-size: 10px; color: var(--ink-muted); }
+
+/* Na TV: a imagem ocupa a altura toda do card e tudo cresce em `em`. */
+.tv .champion { flex: 1; min-height: 0; gap: 1em; padding: 0; }
+.tv .champion__media-wrap { height: 100%; }
+.tv .champion__media { height: 100%; }
+.tv .champion__badge { top: 0.5em; left: 0.5em; gap: 0.35em; padding: 0.3em 0.7em; font-size: 0.8em; }
+.tv .champion__info { gap: 0.6em; min-height: 0; overflow: hidden; }
+.tv .champion__context { font-size: 0.78em; }
+.tv .champion__name { font-size: 1.05em; }
+.tv .champion__stats { gap: 0.5em; }
+.tv .champion__stat { padding: 0.45em 0.6em; }
+.tv .champion__stat span { font-size: 0.72em; }
+.tv .champion__stat strong { font-size: 1.15em; }
+.tv .champion__runners { gap: 0.4em; }
+.tv .champion__runners-title { font-size: 0.7em; }
+.tv .champion__thumb { width: 2.4em; height: 2.4em; }
+.tv .champion__runner-name { font-size: 0.8em; }
+.tv .champion__runner-meta { font-size: 0.7em; }
+
+@media (max-width: 720px) {
+  .champion { grid-template-columns: 1fr; }
+}

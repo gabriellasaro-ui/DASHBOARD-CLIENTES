@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from dash import html
 
+from core import mfa
 from core.branding import admin_logo_data
 
 
@@ -56,4 +57,39 @@ def auth_screen(brand: dict, title: str, subtitle, body, *, footer=None, extra=N
             ),
         ],
         className="auth-screen",
+    )
+
+
+def setup_steps(secret: str, account: str):
+    """
+    Cadastro do app, em passos — o mesmo no login e na tela de Segurança.
+
+    No iPhone a câmera abre o app Senhas, que já guarda códigos de
+    verificação: é um caminho válido, não um erro. A chave em texto fica
+    escondida: só serve para quem não consegue ler o QR, e à vista ela
+    parecia mais uma senha a decorar.
+    """
+    return html.Div(
+        [
+            html.Ol(
+                [
+                    html.Li(["Abra o ", html.Strong("Google Authenticator"), " (ou outro app autenticador), "
+                             "toque em \"+\" > \"Ler código QR\" e aponte para o QR abaixo. Pela câmera comum o "
+                             "iPhone guarda o código no app Senhas, o que também funciona."]),
+                    html.Li("Digite abaixo os 6 números que aparecerem. Eles mudam a cada 30 segundos."),
+                ],
+                className="mfa-steps",
+            ),
+            html.Img(src=mfa.qr_data_uri(secret, account), alt="QR code do autenticador", className="mfa-qr"),
+            html.Details(
+                [
+                    html.Summary("Não consegue ler o QR code?"),
+                    html.P(["No app, escolha \"inserir chave manualmente\" e digite esta chave "
+                            "(é a mesma coisa que o QR, em texto):"], className="mfa-key"),
+                    html.Code(mfa.pretty_secret(secret), className="mfa-key__code"),
+                ],
+                className="mfa-manual",
+            ),
+        ],
+        className="mfa-setup",
     )

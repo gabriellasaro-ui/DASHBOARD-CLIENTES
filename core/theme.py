@@ -110,6 +110,17 @@ def _resolve_brand_colors() -> tuple[str, str, str]:
     try:
         from core.auth import active_tenant, current_user, is_superadmin
 
+        from core.branding import tv_tenant
+
+        # Tela de TV: as séries seguem o cliente da tela, não o da sessão.
+        screen_tenant = tv_tenant()
+        if screen_tenant:
+            return (
+                screen_tenant.get("primary_color") or DEFAULT_PRIMARY,
+                screen_tenant.get("secondary_color") or DEFAULT_SECONDARY,
+                _surface(screen_tenant),
+            )
+
         user = current_user()
         if not user:
             return DEFAULT_PRIMARY, DEFAULT_SECONDARY, DEFAULT_SURFACE

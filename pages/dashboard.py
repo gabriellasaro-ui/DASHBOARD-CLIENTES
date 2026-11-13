@@ -20,7 +20,9 @@ from core import fmt
 from core.auth import active_tenant
 from core.data import DEFAULT_PERIOD, METRIC_KEYS, get_dataset, get_period
 from core.theme import entity_color, series_color
+from core import layouts
 from ui import charts
+from ui import widgets as widgets_ui
 from ui.kpi import kpi_grid
 from ui.primitives import card, card_header, empty_state
 from ui.shell import page_head, select_client_state
@@ -142,8 +144,9 @@ def _body(period_id: str, selected: list[str], plot_config=None):
     data = get_dataset(period_id)
     period = get_period(period_id)
     series = data["series"]
-    totals = data["totals"]
     plot_keys, plot_colors = _plot_config(plot_config)
+    # Blocos que o cliente escolheu mostrar no painel (ver pages/layout.py).
+    widgets = layouts.clean_dashboard(active_tenant().get("layout_data"))["widgets"]
 
     return [
         page_head(
@@ -155,88 +158,23 @@ def _body(period_id: str, selected: list[str], plot_config=None):
             ),
         ),
 
-        # A faixa tem id próprio para o seletor de métricas trocar SÓ ela.
-        html.Div(_kpi_section(data["kpis"], selected, period["compare"]), id="kpi-band"),
-
-        # ---- Curvas --------------------------------------------------------
+        # A faixa tem id próprio para o seletor de métricas trocar SÓ ela. Fica
+        # no layout mesmo escondida: a callback do seletor escreve nela.
         html.Div(
-            [
-                _custom_chart_card(series, plot_keys, plot_colors),
-                charts.chart_card(
-                    "Distribuição dos canais",
-                    subtitle="Participação de cada canal no investimento",
-                    body=html.Div(
-                        [
-                            charts.graph(charts.channel_donut(data["channels"])),
-                            html.Div(
-                                [
-                                    html.Div(
-                                        [
-                                            html.Span(
-                                                className="legend__swatch",
-                                                style={"background": entity_color(c["key"])},
-                                            ),
-                                            html.Span(c["nome"], className="grow truncate"),
-                                            html.Span(fmt.brl(c["valor"]), className="legend__value"),
-                                        ],
-                                        className="legend__item",
-                                        style={"width": "100%", "padding": "5px 0"},
-                                    )
-                                    for c in data["channels"]
-                                ],
-                                style={"padding": "0 20px 4px"},
-                            ),
-                        ]
-                    ),
-                    className="span-4",
-                ),
-            ],
-            className="grid",
+            _kpi_section(data["kpis"], selected, period["compare"]) if "kpis" in widgets else None,
+            id="kpi-band",
         ),
 
+        # ---- Blocos escolhidos (ver /layout) --------------------------------
+        # Uma grade só, com `dense`: tirar um bloco não deixa buraco no meio.
         html.Div(
             [
-                charts.chart_card(
-                    "Custo por lead",
-                    figure=charts.cost_line(series, "cpl", series_color("primary"), "CPL"),
-                    subtitle="Quanto custou cada lead, dia a dia — quanto mais baixo, melhor",
-                    legend_items=[
-                        {"label": "CPL médio", "color": series_color("primary"), "shape": "line",
-                         "value": fmt.brl_cents(totals["cpl"])},
-                    ],
-                    className="span-8",
-                ),
-                card(
-                    [
-                        card_header(
-                            "Funil",
-                            subtitle="Taxa de passagem entre etapas",
-                            lead_icon="funnel",
-                        ),
-                        charts.funnel_stages(data["funnel"]),
-                    ],
-                    className="span-4",
-                ),
+                _custom_chart_card(series, plot_keys, plot_colors) if key == "desempenho"
+                else widgets_ui.dashboard_card(key, data)
+                for key in widgets
+                if key not in ("kpis", "campanhas")
             ],
-            className="grid",
-        ),
-
-        html.Div(
-            [
-                charts.chart_card(
-                    "Leads por dia",
-                    figure=charts.daily_bars(series, "leads", series_color("secondary"), "Leads"),
-                    subtitle=f'{fmt.integer(totals["leads"])} no período',
-                    className="span-6",
-                ),
-                charts.chart_card(
-                    "Investimento acumulado",
-                    figure=charts.cumulative_area(series, "investimento"),
-                    subtitle=f'{fmt.brl(totals["investimento"])} no período',
-                    className="span-6",
-                ),
-            ],
-            className="grid",
+            className="grid grid--dense",
         ),
 
         # ---- Onde agir -----------------------------------------------------
@@ -245,7 +183,7 @@ def _body(period_id: str, selected: list[str], plot_config=None):
             period_id,
             "Campanhas",
             subtitle="Todos os canais · clique no cabeçalho para ordenar",
-        ),
+        ) if "campanhas" in widgets else None,
     ]
 
 

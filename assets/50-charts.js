@@ -48,6 +48,9 @@
       grid: token(element, "--line-soft", "#eff0f2"),
       line: token(element, "--line", "#e6e7ea"),
       surface: token(element, "--surface", "#ffffff"),
+      // Fator de tamanho: 1 no painel; maior na TV (ver .tv no CSS), para
+      // letra e traço acompanharem uma tela vista de longe.
+      scale: parseFloat(token(element, "--chart-scale", "1")) || 1,
     };
   }
 
@@ -60,8 +63,8 @@
       borderWidth: 1,
       titleColor: colors.muted,
       bodyColor: colors.ink,
-      titleFont: { family: colors.font, size: 11, weight: "500" },
-      bodyFont: { family: colors.font, size: 12, weight: "600" },
+      titleFont: { family: colors.font, size: 11 * colors.scale, weight: "500" },
+      bodyFont: { family: colors.font, size: 12 * colors.scale, weight: "600" },
       padding: 10,
       cornerRadius: 8,
       boxWidth: 8,
@@ -98,12 +101,12 @@
       if (isBar) {
         dataset.borderRadius = 4;
         dataset.borderSkipped = "start";
-        dataset.maxBarThickness = 24;
+        dataset.maxBarThickness = 24 * colors.scale;
         dataset.categoryPercentage = 0.7;
         dataset.barPercentage = 0.9;
         dataset.hoverBackgroundColor = wash(item.color, 0.8);
       } else {
-        dataset.borderWidth = 2;
+        dataset.borderWidth = 2 * Math.min(colors.scale, 2);
         dataset.tension = 0.35;
         dataset.fill = item.fill ? "origin" : false;
         dataset.pointHoverRadius = 4;
@@ -136,7 +139,7 @@
             border: { display: false },
             ticks: {
               color: colors.muted,
-              font: { family: colors.font, size: 10 },
+              font: { family: colors.font, size: 10 * colors.scale },
               maxRotation: 0,
               autoSkip: true,
               maxTicksLimit: spec.xTicks || 7,
@@ -156,7 +159,7 @@
             },
             ticks: {
               color: colors.muted,
-              font: { family: colors.font, size: 10 },
+              font: { family: colors.font, size: 10 * colors.scale },
               padding: 8,
               callback: function (value, index) {
                 return yLabels[index] != null ? yLabels[index] : value;
@@ -216,11 +219,19 @@
           context.textAlign = "center";
           context.textBaseline = "middle";
           context.fillStyle = colors.ink;
-          context.font = "600 17px " + colors.font;
-          context.fillText(center.value || "", x, y - 7);
+          // O total encolhe até caber no furo da rosca: na TV, com a fonte
+          // ampliada, "R$ 3,9 mil" encostava no anel.
+          var hole = (chart.getDatasetMeta(0).data[0] || {}).innerRadius || 60;
+          var size = 17 * colors.scale;
+          context.font = "600 " + size + "px " + colors.font;
+          while (size > 9 && context.measureText(center.value || "").width > hole * 1.55) {
+            size -= 1;
+            context.font = "600 " + size + "px " + colors.font;
+          }
+          context.fillText(center.value || "", x, y - 7 * colors.scale);
           context.fillStyle = colors.muted;
-          context.font = "400 10px " + colors.font;
-          context.fillText(center.label || "", x, y + 12);
+          context.font = "400 " + 10 * colors.scale + "px " + colors.font;
+          context.fillText(center.label || "", x, y + 12 * colors.scale);
           context.restore();
         },
       }],

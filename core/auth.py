@@ -50,8 +50,12 @@ def _load_user() -> dict | None:
             session.clear()
             return None
         # O cliente pedido pode ter sido removido desde o último clique;
-        # `get_user` caiu em outro, e a sessão passa a apontar para ele.
-        session["active_tenant_id"] = user["tenant_id"]
+        # `get_user` caiu em outro, e a sessão passa a apontar para ele. Só
+        # grava se mudou: regravar o cookie em toda resposta fazia uma
+        # requisição antiga, ainda em voo, desfazer a troca de cliente recém-
+        # feita — o painel "voltava sozinho" para o cliente anterior.
+        if session.get("active_tenant_id") != user["tenant_id"]:
+            session["active_tenant_id"] = user["tenant_id"]
     return user
 
 

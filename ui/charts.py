@@ -315,7 +315,7 @@ def funnel_stages(stages: list[dict]):
 # Card de gráfico
 # --------------------------------------------------------------------------
 
-def graph(spec: dict, graph_id: str = None):
+def graph(spec: dict, graph_id: str = None, fill: bool = False):
     """
     Container do Chart.js: a especificação vai no atributo `data-chart`.
 
@@ -325,7 +325,9 @@ def graph(spec: dict, graph_id: str = None):
     """
     props = {
         "className": "chart-wrap",
-        "style": {"height": f"{spec.get('height') or 240}px"},
+        # `fill`: ocupa a altura do container (TV, onde o espaço é dividido
+        # pela tela inteira); senão, a altura fixa da especificação.
+        "style": {"height": "100%"} if fill else {"height": f"{spec.get('height') or 240}px"},
         "role": "img",
         "aria-label": ", ".join(item.get("label", "") for item in spec.get("datasets", [])),
         # `separators` compacto: o JSON vai inteiro para o HTML.
